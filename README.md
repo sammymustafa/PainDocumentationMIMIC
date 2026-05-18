@@ -81,6 +81,24 @@ src/
 scripts/fetch_pain_data.py
 ```
 
+## Table 1 by race
+
+From `data/processed/modeling/final_modeling_dataset.csv` (vertical layout: characteristics as rows, race strata as columns):
+
+```bash
+python scripts/make_demographic_table.py
+```
+
+Outputs: `figures/table1_by_race.csv`, `figures/table1_by_race.png`
+
+Or in Python:
+
+```python
+from src.demographic_table import make_demographic_table
+
+make_demographic_table()
+```
+
 ## Use in Python
 
 ```python
