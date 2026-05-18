@@ -108,6 +108,17 @@ python scripts/run_reassessment_analysis.py
 
 Year eras are ~20-year buckets over de-identified years 2110–2211 (not calendar years).
 
+## PART 2: Within-acuity and post-analgesic analyses
+
+Outputs in `figures/part2/` (does not overwrite main figures).
+
+```bash
+python scripts/run_part2_analysis.py
+```
+
+- **PART 2A:** Cox models within ESI strata (and acuity × pain severity); race/ethnicity vs White
+- **PART 2B:** Post-analgesic pathway (time zero = first analgesic; outcome = first pain score after analgesic)
+
 ## Table 1 by race
 
 From `data/processed/modeling/final_modeling_dataset.csv` (vertical layout: characteristics as rows, race strata as columns):

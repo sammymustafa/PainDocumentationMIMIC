@@ -9,11 +9,12 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from analysis.pain_score_heatmap import generate_pain_score_heatmap  # noqa: E402
+from analysis.pain_score_heatmap import generate_all_heatmaps  # noqa: E402
 
 
 def main() -> None:
-    generate_pain_score_heatmap()
+    print("Generating heatmap variants (see README_heatmap_options.md in output folder)…")
+    generate_all_heatmaps()
     print(f"\nDone → {REPO_ROOT / 'figures' / '08_pain_score_heatmap'}")
 
 

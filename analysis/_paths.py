@@ -5,6 +5,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SURVIVAL_CSV = REPO_ROOT / "data/processed/analysis/survival_cohort.csv"
 FIGURES = REPO_ROOT / "figures"
+PART2_DIR = FIGURES / "part2"
 HEATMAP_DIR = FIGURES / "08_pain_score_heatmap"
 ANALYSIS_OUT = REPO_ROOT / "data/processed/analysis"
 

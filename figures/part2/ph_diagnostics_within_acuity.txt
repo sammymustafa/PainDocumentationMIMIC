@@ -1,0 +1,59 @@
+=== Grouped ESI 3 ===
+
+
+Proportional hazards test (Schoenfeld, rank transform)
+
+  C(age_group, Treatment(reference='40-64'))[T.18-39]: p = 0.0130 *violated*
+  C(age_group, Treatment(reference='40-64'))[T.65+]: p = 0.0010 *violated*
+  C(arrival_shift, Treatment(reference='day'))[T.evening]: p = 0.0421 *violated*
+  C(arrival_shift, Treatment(reference='day'))[T.night]: p = 0.0000 *violated*
+  C(disposition_group, Treatment(reference='HOME'))[T.ADMITTED]: p = 0.0000 *violated*
+  C(disposition_group, Treatment(reference='HOME'))[T.OTHER]: p = 0.8068
+  C(disposition_group, Treatment(reference='HOME'))[T.TRANSFER]: p = 0.4469
+  C(injury_group, Treatment(reference='acute_pancreatitis'))[T.fall]: p = 0.4474
+  C(injury_group, Treatment(reference='acute_pancreatitis'))[T.fracture_dislocation]: p = 0.2268
+  C(injury_group, Treatment(reference='acute_pancreatitis'))[T.other_trauma]: p = 0.1819
+  C(insurance_group, Treatment(reference='private'))[T.Medicaid]: p = 0.8640
+  C(insurance_group, Treatment(reference='private'))[T.Medicare]: p = 0.7564
+  C(insurance_group, Treatment(reference='private'))[T.undocumented]: p = 0.5462
+  C(language_group, Treatment(reference='English'))[T.non-English]: p = 0.3916
+  C(language_group, Treatment(reference='English'))[T.undocumented]: p = 0.5205
+  C(race_ethnicity, Treatment(reference='White'))[T.Asian]: p = 0.2554
+  C(race_ethnicity, Treatment(reference='White'))[T.Black]: p = 0.5072
+  C(race_ethnicity, Treatment(reference='White'))[T.Hispanic]: p = 0.8086
+  C(sex, Treatment(reference='F'))[T.M]: p = 0.0036 *violated*
+  initial_pain_score: p = 0.0062 *violated*
+
+=== Interaction model (full cohort) ===
+
+
+Proportional hazards test (Schoenfeld, rank transform)
+
+  C(age_group, Treatment(reference='40-64'))[T.18-39]: p = 0.1420
+  C(age_group, Treatment(reference='40-64'))[T.65+]: p = 0.0000 *violated*
+  C(arrival_shift, Treatment(reference='day'))[T.evening]: p = 0.0120 *violated*
+  C(arrival_shift, Treatment(reference='day'))[T.night]: p = 0.0000 *violated*
+  C(disposition_group, Treatment(reference='HOME'))[T.ADMITTED]: p = 0.0000 *violated*
+  C(disposition_group, Treatment(reference='HOME'))[T.OTHER]: p = 0.0350 *violated*
+  C(disposition_group, Treatment(reference='HOME'))[T.TRANSFER]: p = 0.1396
+  C(esi_group)[T.ESI 3]: p = 0.0000 *violated*
+  C(esi_group)[T.ESI 4–5]: p = 0.0000 *violated*
+  C(injury_group, Treatment(reference='acute_pancreatitis'))[T.fall]: p = 0.5466
+  C(injury_group, Treatment(reference='acute_pancreatitis'))[T.fracture_dislocation]: p = 0.0459 *violated*
+  C(injury_group, Treatment(reference='acute_pancreatitis'))[T.other_trauma]: p = 0.8090
+  C(insurance_group, Treatment(reference='private'))[T.Medicaid]: p = 0.4603
+  C(insurance_group, Treatment(reference='private'))[T.Medicare]: p = 0.9590
+  C(insurance_group, Treatment(reference='private'))[T.undocumented]: p = 0.2477
+  C(language_group, Treatment(reference='English'))[T.non-English]: p = 0.2265
+  C(language_group, Treatment(reference='English'))[T.undocumented]: p = 0.3712
+  C(race_ethnicity, Treatment(reference='White'))[T.Asian]: p = 0.6735
+  C(race_ethnicity, Treatment(reference='White'))[T.Asian]:C(esi_group)[T.ESI 3]: p = 0.5838
+  C(race_ethnicity, Treatment(reference='White'))[T.Asian]:C(esi_group)[T.ESI 4–5]: p = 0.9214
+  C(race_ethnicity, Treatment(reference='White'))[T.Black]: p = 0.9095
+  C(race_ethnicity, Treatment(reference='White'))[T.Black]:C(esi_group)[T.ESI 3]: p = 0.7002
+  C(race_ethnicity, Treatment(reference='White'))[T.Black]:C(esi_group)[T.ESI 4–5]: p = 0.6308
+  C(race_ethnicity, Treatment(reference='White'))[T.Hispanic]: p = 0.0145 *violated*
+  C(race_ethnicity, Treatment(reference='White'))[T.Hispanic]:C(esi_group)[T.ESI 3]: p = 0.0742
+  C(race_ethnicity, Treatment(reference='White'))[T.Hispanic]:C(esi_group)[T.ESI 4–5]: p = 0.1099
+  C(sex, Treatment(reference='F'))[T.M]: p = 0.0000 *violated*
+  initial_pain_score: p = 0.0008 *violated*

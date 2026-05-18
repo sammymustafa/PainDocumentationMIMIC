@@ -1,0 +1,24 @@
+PART 2B: Analgesic-pathway analysis
+==================================================
+Analgesic recipients (after initial pain): N=12,659
+Post-analgesic reassessment events: 8,172
+Median time analgesic → reassessment (among events): 80 min
+
+Rule: first pain score strictly after first analgesic time; censor at ED outtime.
+Excluded analgesic before initial pain; reassessment at/before analgesic not counted.
+
+By race/ethnicity:
+  White: N=8,379, post-analgesic reassessment 66.1%, median time 84 min
+  Black: N=2,697, post-analgesic reassessment 61.9%, median time 72 min
+  Asian: N=554, post-analgesic reassessment 58.7%, median time 80 min
+  Hispanic: N=1,029, post-analgesic reassessment 62.2%, median time 74 min
+
+Cox model (race vs White):
+  Asian vs 'White': HR=0.92 (0.82-1.03), p=0.152
+  Black vs 'White': HR=1.04 (0.98-1.11), p=0.154
+  Hispanic vs 'White': HR=1.04 (0.95-1.13), p=0.419
+
+Caveats:
+  Analgesic administration is a treatment pathway/mediator, not a standard confounder.
+  This analysis describes documentation behavior after treatment, not causal effect of analgesia.
+  Patients without post-analgesic scores are censored at discharge.

@@ -1,0 +1,30 @@
+PART 2A: Within-acuity pain reassessment analysis
+==================================================
+Cohort N: 29,263
+Reassessment events: 16,465
+ESI groups modeled: ESI 1–2, ESI 3, ESI 4–5
+
+Sparse / skipped strata:
+Race×acuity interaction: smallest interaction p = 0.0004
+
+Key findings (grouped ESI models):
+  Asian vs White:
+    ESI 1–2: HR=0.98 (0.83-1.15), p=0.822
+    ESI 3: HR=0.91 (0.82-1.01), p=0.084
+    ESI 4–5: HR=0.96 (0.81-1.14), p=0.667
+  Black vs White:
+    ESI 1–2: HR=0.89 (0.81-0.96), p=0.006*
+    ESI 3: HR=0.98 (0.93-1.04), p=0.517
+    ESI 4–5: HR=1.05 (0.95-1.16), p=0.358
+  Hispanic vs White:
+    ESI 1–2: HR=1.00 (0.88-1.13), p=0.943
+    ESI 3: HR=1.00 (0.92-1.09), p=0.936
+    ESI 4–5: HR=1.05 (0.91-1.21), p=0.515
+
+Interpretation:
+  Race/ethnicity differences were generally attenuated within acuity strata
+  compared with unstratified analyses. Where HR < 1 persists, reassessment
+  documentation was slower vs White within similar triage levels.
+  Acuity reflects clinical severity and triage workflow—not only a confounder.
+  Insurance and language patterns from the main analysis may still operate
+  within acuity bands.
