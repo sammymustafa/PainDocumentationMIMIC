@@ -1,0 +1,97 @@
+# Pain Documentation MIMIC
+
+Pull ED pain assessment data from **MIMIC-IV** via PhysioNet BigQuery, matching the cohort and processing logic in the Colab notebook `5_18_pain_phenotypes.ipynb`.
+
+## Cohort
+
+- **Setting:** MIMIC-IV Emergency Department (`mimiciv_ed`)
+- **Diagnoses:** acute pancreatitis or trauma (ICD S00–T88)
+- **Outcome rows:** vital signs with non-null pain scores, joined to demographics and ED stay timing
+
+SQL lives in [`sql/pain_phenotypes.sql`](sql/pain_phenotypes.sql).
+
+## Prerequisites
+
+1. **PhysioNet credentialed access** to MIMIC-IV and BigQuery export enabled on your Google account.
+2. A GCP project with BigQuery billing (default in config: `mimic-pain-ap`).
+3. Python 3.10+.
+
+## Authentication (local, not Colab)
+
+Colab used `google.colab.auth`. Locally, use Application Default Credentials:
+
+```bash
+gcloud auth application-default login
+gcloud config set project mimic-pain-ap
+```
+
+Or point to a service account (do not commit the JSON file):
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"
+```
+
+Edit [`config/settings.yaml`](config/settings.yaml) if your billing project or output paths differ.
+
+## Setup
+
+```bash
+cd PainDocumentationMIMIC
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+## Run
+
+Fetch from BigQuery and run the cleaning / feature pipeline:
+
+```bash
+python scripts/fetch_pain_data.py
+```
+
+Options:
+
+```bash
+# Save raw only (no processing)
+python scripts/fetch_pain_data.py --raw-only
+
+# Re-run processing on saved raw parquet
+python scripts/fetch_pain_data.py --skip-fetch
+```
+
+Outputs (gitignored):
+
+| File | Description |
+|------|-------------|
+| `data/raw/pain_raw.parquet` | BigQuery extract |
+| `data/raw/pain_raw.csv` | Same raw data as CSV |
+| `data/processed/pain_filtered.parquet` | Cleaned cohort with trajectory features |
+| `data/processed/pain_filtered.csv` | Same processed data as CSV |
+
+## Project layout
+
+```
+config/settings.yaml    # project ID, thresholds, output paths
+sql/pain_phenotypes.sql # BigQuery SQL (same logic as Colab)
+src/
+  bigquery_io.py        # client + query → DataFrame
+  pain_cleaning.py      # pain score parsing
+  pain_processing.py    # cohort filters and derived columns
+scripts/fetch_pain_data.py
+```
+
+## Use in Python
+
+```python
+from src.bigquery_io import fetch_pain_cohort
+from src.pain_processing import process_pain_dataframe
+
+pain = fetch_pain_cohort("mimic-pain-ap")
+pain_filtered = process_pain_dataframe(pain)
+```
+
+## Notes
+
+- MIMIC data must **not** be committed to GitHub. Parquet paths are in `.gitignore`.
+- The query reads from `physionet-data.*` datasets; your GCP user must have PhysioNet BigQuery access linked to that project.

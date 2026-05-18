@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Data & credentials (never commit MIMIC extracts or keys)
+data/
+*.parquet
+*.csv
+*.feather
+*.pkl
+*.pickle
+service-account*.json
+*credentials*.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.*

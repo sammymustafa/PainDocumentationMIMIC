@@ -1,0 +1,21 @@
+# BigQuery project where you run queries (billing project).
+# PhysioNet MIMIC tables live in physionet-data; your GCP project must have access.
+bigquery:
+  project_id: mimic-pain-ap
+
+processing:
+  language_threshold: 100
+  insurance_threshold: 150
+  exclude_races: true
+  excluded_races:
+    - American Indian or Alaska Native
+    - Two or More Races
+    - Native Hawaiian or Other Pacific Islander
+    - Unknown
+    - Asian
+
+output:
+  raw_path: data/raw/pain_raw.parquet
+  processed_path: data/processed/pain_filtered.parquet
+  raw_csv_path: data/raw/pain_raw.csv
+  processed_csv_path: data/processed/pain_filtered.csv
