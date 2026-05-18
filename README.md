@@ -81,6 +81,33 @@ src/
 scripts/fetch_pain_data.py
 ```
 
+## Reassessment analysis (models + figures)
+
+Among stays with initial and first reassessment documented (`final_modeling_dataset.csv`):
+
+```bash
+python scripts/run_reassessment_analysis.py
+```
+
+**Sequential OLS models** (outcome: log minutes to reassessment):
+
+| Model | Adjustment |
+|-------|------------|
+| M1 | Initial pain only |
+| M2 | + demographics (race incl. Unknown, age, sex, insurance, language) |
+| M3 | + clinical (ESI, diagnosis, trauma subtype, vitals) |
+| M4 | + workflow (5 de-identified year eras, shift, weekend, ED census/arrivals) |
+| M5 | + analgesic before reassessment |
+| M6 | Sensitivity: + disposition & ED LOS |
+
+**Outputs:**
+
+- `figures/main/` — 7 main figures (DAG, ECDF by race, sequential models, multi-factor forest, factor panels, ESI stratification, analgesic × disposition)
+- `figures/supplement/` — ECDF/adjusted plots for insurance, language, sex, age, diagnosis, shift, disposition, era trends, logistic windows, sensitivity
+- `data/processed/analysis/sequential_ols_results.csv`
+
+Year eras are ~20-year buckets over de-identified years 2110–2211 (not calendar years).
+
 ## Table 1 by race
 
 From `data/processed/modeling/final_modeling_dataset.csv` (vertical layout: characteristics as rows, race strata as columns):
