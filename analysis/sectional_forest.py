@@ -103,7 +103,7 @@ def exclude_term(
     exclude_arrival_other: bool = False,
 ) -> bool:
     blob = f"{term} {comparison}".lower()
-    if "undocumented" in blob:
+    if "language_group" in blob and "undocumented" in blob:
         return True
     if exclude_year and ("year_era" in blob or "other_era" in blob):
         return True

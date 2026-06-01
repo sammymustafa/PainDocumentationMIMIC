@@ -14,7 +14,8 @@ We identified ED stays with at least one documented initial pain score and eligi
 The analytic cohort was restricted to encounters with ED diagnoses of acute pancreatitis or trauma (including fall, fracture/dislocation, and other trauma subtypes), reflecting a clinically homogeneous population with expected pain documentation and reassessment workflows.
 Figure~\ref{fig:flow} summarizes cohort construction.
 
-Starting from \FlowAllED{} ED stays in the extract, we applied diagnosis-based inclusion, excluded small or unknown race/ethnicity categories, required a positive initial pain score with valid time-to-event information, excluded undocumented insurance, and required a documented Emergency Severity Index (ESI) triage level.
+Starting from \FlowAllED{} ED stays in the extract, we applied diagnosis-based inclusion, excluded small or unknown race/ethnicity categories, required a positive initial pain score with valid time-to-event information, and required a documented Emergency Severity Index (ESI) triage level.
+Insurance categories in models included private (reference), Medicare, Medicaid, undocumented (missing payer documentation in the EHR), and uninsured (self-pay).
 The resulting primary analytic cohort comprised \CohortN{} encounters.
 
 \subsection{Outcome and follow-up}

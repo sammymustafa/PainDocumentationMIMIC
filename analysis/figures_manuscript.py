@@ -18,10 +18,7 @@ from analysis.sectional_forest import M4_SECTIONS, plot_single_sectional_forest
 FLOW_STEPS = [
     ("all_ed_stays_in_extract", "MIMIC-IV ED stays retrieved", "end"),
     ("ap_or_trauma_stays", "Filter acute pancreatitis or trauma (ED diagnosis)", "mid"),
-    ("after_exclude_small_race_groups", "Exclude small/unknown race groups", "mid"),
     ("initial_pain_documented", "Extract initial pain scores (>0) with timestamps", "mid"),
-    ("after_valid_survival_time", "Valid time from initial pain to reassessment/censor", "mid"),
-    ("after_exclude_undocumented_insurance", "Exclude undocumented insurance", "mid"),
     ("after_nonmissing_esi", "Require documented ESI / triage acuity", "mid"),
     ("primary_analytic_cohort", "Primary analytic cohort", "end"),
 ]
@@ -91,15 +88,16 @@ def fig02_flow(counts: dict | None = None, path: Path | None = None) -> None:
         counts = json.loads(p.read_text()) if p.exists() else compute_flow_counts()
 
     n_steps = len(FLOW_STEPS)
-    fig_h = 0.55 * n_steps + 1.5
-    fig, ax = plt.subplots(figsize=(7.5, fig_h))
+    fig_h = max(12, 1.35 * n_steps + 2.5)
+    fig, ax = plt.subplots(figsize=(8.5, fig_h))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
 
-    box_w, box_h = 0.72, 0.075
-    y_top = 0.94
-    y_step = box_h + 0.045
+    box_w, box_h = 0.78, 0.088
+    gap_between = 0.072
+    y_top = 0.96
+    y_step = box_h + gap_between
     prev_n = None
 
     for i, (key, label, kind) in enumerate(FLOW_STEPS):
@@ -111,44 +109,54 @@ def fig02_flow(counts: dict | None = None, path: Path | None = None) -> None:
                 ((1 - box_w) / 2, yc),
                 box_w,
                 box_h,
-                boxstyle="round,pad=0.01",
+                boxstyle="round,pad=0.02",
                 fc=fc,
                 ec="#333",
                 linewidth=1,
             )
         )
         n = counts.get(key, 0)
-        ax.text(0.5, yc + box_h * 0.55, label, ha="center", va="center", fontsize=9, wrap=True)
-        ax.text(0.5, yc + box_h * 0.2, f"N = {n:,}", ha="center", va="center", fontsize=10, fontweight="bold")
+        ax.text(
+            0.5,
+            yc + box_h * 0.58,
+            label,
+            ha="center",
+            va="center",
+            fontsize=9.5,
+            wrap=True,
+            linespacing=1.15,
+        )
+        ax.text(
+            0.5,
+            yc + box_h * 0.18,
+            f"N = {n:,}",
+            ha="center",
+            va="center",
+            fontsize=11,
+            fontweight="bold",
+        )
         if prev_n is not None and n is not None:
             excluded = int(prev_n) - int(n)
             if excluded > 0:
                 ax.text(
                     0.5,
-                    yc + box_h + 0.012,
+                    yc + box_h / 2 + gap_between * 0.45,
                     f"−{excluded:,}",
                     ha="center",
                     va="bottom",
-                    fontsize=8,
+                    fontsize=8.5,
                     color="#555",
                 )
         if i < n_steps - 1:
+            arrow_gap = gap_between * 0.35
             ax.annotate(
                 "",
-                xy=(0.5, yc - 0.01),
-                xytext=(0.5, yc - y_step + box_h + 0.01),
-                arrowprops=dict(arrowstyle="->", color="#333", lw=1.2),
+                xy=(0.5, yc - box_h / 2 - arrow_gap),
+                xytext=(0.5, yc - y_step + box_h / 2 + arrow_gap),
+                arrowprops=dict(arrowstyle="->", color="#333", lw=1.3),
             )
         prev_n = n
 
-    comorb = counts.get("with_any_comorbidity_flag")
-    foot = (
-        "Undocumented insurance excluded from Cox models. Language in Table 1 only (not in adjusted Cox). "
-        "Comorbidity flags from linked hospital ICD when available."
-    )
-    if comorb is not None:
-        foot += f" Analytic cohort with ≥1 comorbidity flag: {comorb:,}."
-    ax.text(0.5, 0.02, foot, ha="center", va="bottom", fontsize=7, color="#444", wrap=True)
     ax.set_title("Fig. 2. Cohort construction and analytic sample", fontweight="bold", fontsize=11, pad=12)
     fig.savefig(path, dpi=200, bbox_inches="tight", facecolor="white")
     plt.close(fig)
@@ -163,7 +171,11 @@ def fig03_table1_overview(table: pd.DataFrame, path: Path | None = None) -> None
 
 def fig04_km(df: pd.DataFrame, path: Path | None = None) -> None:
     path = path or MANUSCRIPT_DIR / "fig04_km_reassessment_overview.png"
-    ins_levels = [x for x in ["private", "Medicaid", "Medicare"] if x in df["insurance_group"].unique()]
+    ins_levels = [
+        x
+        for x in ["private", "Medicaid", "Medicare", "undocumented", "uninsured"]
+        if x in df["insurance_group"].unique()
+    ]
     panels = [
         ("race_ethnicity", RACES, "Race/ethnicity"),
         ("insurance_group", ins_levels, "Insurance"),

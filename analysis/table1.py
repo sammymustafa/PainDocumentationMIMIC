@@ -64,11 +64,13 @@ def build_table1(df: pd.DataFrame | None = None) -> pd.DataFrame:
     for cat in df["race_ethnicity"].dropna().unique():
         add_row(f"  {cat}, n (%)", _n_pct(df["race_ethnicity"] == cat))
 
-    add_section("Insurance (analytic cohort excludes undocumented)")
+    add_section("Insurance")
     ins_map = {
         "private": "Private",
         "Medicaid": "Medicaid",
         "Medicare": "Medicare",
+        "undocumented": "Undocumented (missing payer in EHR)",
+        "uninsured": "Uninsured (self-pay)",
     }
     for label, val in _cat_rows(df, "insurance_group", ins_map):
         add_row(label, val)
@@ -177,8 +179,8 @@ def _to_markdown(table: pd.DataFrame) -> str:
         lines.append(f"| {row.iloc[0]} | {row.iloc[1]} |")
     lines.append("")
     lines.append(
-        "Footnotes: Analytic cohort excludes stays with undocumented insurance. "
-        "Language is descriptive only (excluded from Cox models). "
+        "Footnotes: Insurance includes undocumented (missing payer) and uninsured (self-pay) vs private reference in Cox. "
+        "Language undocumented is descriptive only (excluded from Cox models). "
         "Policy eras in models use 5-year bins on de-identified MIMIC years (sparse eras collapsed)."
     )
     return "\n".join(lines)

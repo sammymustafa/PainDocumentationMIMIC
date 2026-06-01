@@ -26,6 +26,8 @@ KEY_FACTORS: list[tuple[str, dict]] = [
     ("Asian vs White", {"term_contains": "race_ethnicity", "level": "Asian"}),
     ("Medicaid vs private", {"term_contains": "insurance_group", "level": "Medicaid"}),
     ("Medicare vs private", {"term_contains": "insurance_group", "level": "Medicare"}),
+    ("Undocumented vs private", {"term_contains": "insurance_group", "level": "undocumented"}),
+    ("Uninsured vs private", {"term_contains": "insurance_group", "level": "uninsured"}),
     ("Initial pain (per unit)", {"exact_term": "initial_pain_score"}),
 ]
 

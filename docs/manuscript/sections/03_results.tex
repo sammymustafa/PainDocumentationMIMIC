@@ -3,10 +3,10 @@
 
 \subsection{Cohort characteristics and descriptive outcomes}
 
-The analytic cohort included \CohortN{} ED encounters; \CohortEvents{} (61.4\%) had at least one documented pain reassessment during the stay (Table~\ref{tab:cohort}).
+The analytic cohort included \CohortN{} ED encounters; \CohortEvents{} (56.3\%) had at least one documented pain reassessment during the stay (Table~\ref{tab:cohort}).
 The mean age was 56.2 years (SD 19.7); 70.4\% of patients were White, 19.7\% Black, 6.9\% Hispanic, and 3.1\% Asian.
 Most encounters were trauma-related (92.8\%); acute pancreatitis accounted for 7.2\%.
-Insurance distribution was Medicare 46.6\%, private 29.5\%, and Medicaid 23.9\% (undocumented insurance excluded).
+Insurance distribution included Medicare, private, Medicaid, undocumented (missing payer in EHR), and uninsured (self-pay); see Table~\ref{tab:cohort}.
 Mean initial pain score was 6.1 (SD 2.6); mean ESI was 2.7 (SD 0.7).
 
 Reassessment was often delayed: the median time to first reassessment was 185 minutes (IQR 96--311).
@@ -57,7 +57,8 @@ Weekend arrival and ED crowding variables showed weaker or null associations at 
 
 Insurance showed the largest and most robust associations with reassessment timing.
 Compared with private insurance, Medicaid was associated with substantially slower reassessment in M4 (HR \HRMedicaidMfour{}).
-Medicare was also associated with slower reassessment (HR \HRMedicareMfour{}), though the magnitude was smaller than for Medicaid.
+Medicare was also associated with slower reassessment (HR \HRMedicareMfour{}).
+Undocumented insurance (missing payer documentation) had a hazard ratio near unity versus private (HR \HRUndocumentedMfour{}).
 
 Sequential attenuation demonstrated minimal change in the Medicaid association from M2 (\HRMedicaidMtwo{}) through M3 (\HRMedicaidMthree{}) to M4 (\HRMedicaidMfourSeq{}; Figure~\ref{fig:attenuation}).
 An insurance-focused analysis including Kaplan--Meier curves, within-acuity estimates, and pain-stratum models corroborated this pattern (Figure~\ref{fig:insurance}).

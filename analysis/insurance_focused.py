@@ -15,7 +15,7 @@ from analysis.cox_models import formula_m4
 from analysis.prep_cohort import prep_analytic_cohort
 from analysis.sectional_forest import exclude_term
 
-INS_LEVELS = ["private", "Medicaid", "Medicare"]
+INS_LEVELS = ["private", "Medicaid", "Medicare", "undocumented", "uninsured"]
 PAIN_BINS = [("1-3", 1, 3), ("4-6", 4, 6), ("7-10", 7, 10)]
 
 
@@ -29,15 +29,11 @@ def _insurance_m4_rows(m4: pd.DataFrame) -> pd.DataFrame:
             axis=1,
         )
     ]
-    sub = sub[sub["comparison"].astype(str).str.contains("Medicaid|Medicare", case=False, regex=True)]
     return sub.sort_values("hazard_ratio")
 
 
 def _insurance_within_acuity(within: pd.DataFrame) -> pd.DataFrame:
-    sub = within[
-        within["term"].astype(str).str.contains("insurance_group", na=False)
-        & within["comparison"].astype(str).str.contains("Medicaid|Medicare", case=False, regex=True)
-    ].copy()
+    sub = within[within["term"].astype(str).str.contains("insurance_group", na=False)].copy()
     if "esi_group" not in sub.columns:
         return sub
     return sub.sort_values(["esi_group", "hazard_ratio"])

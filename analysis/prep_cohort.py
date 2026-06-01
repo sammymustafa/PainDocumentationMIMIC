@@ -45,9 +45,6 @@ def prep_analytic_cohort(df: pd.DataFrame | None = None) -> pd.DataFrame:
         & (out[DURATION_COL] > 0)
     ].copy()
 
-    if "insurance_group" in out.columns:
-        out = out[out["insurance_group"] != "undocumented"].copy()
-
     if "language_group" in out.columns:
         out.loc[out["language_group"] == "undocumented", "language_group"] = np.nan
 
@@ -109,17 +106,7 @@ def compute_flow_counts(
         & (s[DURATION_COL] > 0)
     )
     n_after_duration = int(mask_base.sum())
-    if "insurance_group" in s.columns:
-        n_after_insurance = int((mask_base & (s["insurance_group"] != "undocumented")).sum())
-    else:
-        n_after_insurance = n_after_duration
-    n_after_esi = int(
-        (
-            mask_base
-            & (s["insurance_group"] != "undocumented" if "insurance_group" in s.columns else True)
-            & s["triage_acuity"].notna()
-        ).sum()
-    )
+    n_after_esi = int((mask_base & s["triage_acuity"].notna()).sum())
 
     cohort = prep_analytic_cohort(surv)
     n_analytic = len(cohort)
@@ -133,7 +120,6 @@ def compute_flow_counts(
         "after_exclude_small_race_groups": n_after_race_stay,
         "initial_pain_documented": int(n_pain),
         "after_valid_survival_time": int(n_after_duration),
-        "after_exclude_undocumented_insurance": int(n_after_insurance),
         "after_nonmissing_esi": int(n_after_esi),
         "primary_analytic_cohort": int(n_analytic),
         "reassessment_events": int(cohort[EVENT_COL].sum()),
