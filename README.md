@@ -1,153 +1,55 @@
 # Pain Documentation MIMIC
 
-Pull ED pain assessment data from **MIMIC-IV** via PhysioNet BigQuery, matching the cohort and processing logic in the Colab notebook `5_18_pain_phenotypes.ipynb`.
+MIMIC-IV ED cohort (acute pancreatitis and trauma) for **time to first pain reassessment** after initial pain documentation.
 
-## Cohort
-
-- **Setting:** MIMIC-IV Emergency Department (`mimiciv_ed`)
-- **Diagnoses:** acute pancreatitis or trauma (ICD S00–T88)
-- **Outcome rows:** vital signs with non-null pain scores, joined to demographics and ED stay timing
-
-SQL lives in [`sql/pain_phenotypes.sql`](sql/pain_phenotypes.sql).
-
-## Prerequisites
-
-1. **PhysioNet credentialed access** to MIMIC-IV and BigQuery export enabled on your Google account.
-2. A GCP project with BigQuery billing (default in config: `mimic-pain-ap`).
-3. Python 3.10+.
-
-## Authentication (local, not Colab)
-
-Colab used `google.colab.auth`. Locally, use Application Default Credentials:
+## Quick start
 
 ```bash
-gcloud auth application-default login
-gcloud config set project mimic-pain-ap
-```
-
-Or point to a service account (do not commit the JSON file):
-
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"
-```
-
-Edit [`config/settings.yaml`](config/settings.yaml) if your billing project or output paths differ.
-
-## Setup
-
-```bash
-cd PainDocumentationMIMIC
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+python scripts/fetch_pain_data.py          # optional: refresh from BigQuery
+python scripts/run_analysis.py             # full manuscript pipeline
 ```
 
-## Run
+**Outputs:** `figures/manuscript/fig01`–`fig15`  
+**Figure list:** `docs/FIGURE_MANIFEST.md`  
+**Methods:** `docs/ANALYSIS_PLAN.md`  
+**LaTeX manuscript (Overleaf-ready):** `docs/manuscript/` — zip that folder to upload; figures are in `docs/manuscript/figures/`
 
-Fetch from BigQuery and run the cleaning / feature pipeline:
+## Primary model sequence (M1–M4)
+
+| Model | Content |
+|-------|---------|
+| M1 | Initial pain + injury |
+| M2 | Race, insurance, language, age, sex |
+| M3 | ESI + vitals (adjusted) + comorbidity if available |
+| **M4** | Arrival mode, shift, weekend, crowding, year — **primary** |
+
+**HR interpretation:** HR > 1 = faster reassessment; HR < 1 = slower reassessment.
+
+Disposition and analgesia are **downstream** and **not** in the primary sequence. Vitals are in M3 but hidden from the main M4 forest (appendix table). Other arrival mode is appendix-only.
+
+## Sensitivity / pathway analyses
+
+- **Disposition:** M4 + admitted vs home (`fig09`) — transfer/other excluded from main inference  
+- **Post-analgesic:** time zero = first analgesic (`fig13`)  
+- **Severe pain:** pain 7–10 and pain = 10 (`fig12`)  
+- **Pain=10 & ESI 1–2:** parsimonious subgroup (`fig14`)  
+- **Within-acuity:** race/insurance main (`fig11`); appendix for other variables  
+- **IPTW:** Medicaid vs private (`fig15`)  
+- **Year:** continuous M4 + year (`fig07`)
+
+## Main figures
+
+| Fig | File |
+|-----|------|
+| 06 | `fig06_m4_sectional_forest.png` |
+| 07 | `fig07_year_era_reassessment_trend.png` |
+| 08 | `fig08_sequential_attenuation_key_factors.png` |
+| 09 | `fig09_m4_disposition_sensitivity.png` |
+| 10–14 | insurance, within-acuity, severe pain, post-analgesic, pain10/ESI1–2 |
+| 15 | `fig15_iptw_sensitivity.png` |
 
 ```bash
-python scripts/fetch_pain_data.py
+python scripts/run_analysis.py
 ```
-
-Options:
-
-```bash
-# Save raw only (no processing)
-python scripts/fetch_pain_data.py --raw-only
-
-# Re-run processing on saved raw parquet
-python scripts/fetch_pain_data.py --skip-fetch
-```
-
-Outputs (gitignored):
-
-| File | Description |
-|------|-------------|
-| `data/raw/pain_raw.parquet` | BigQuery extract |
-| `data/raw/pain_raw.csv` | Same raw data as CSV |
-| `data/processed/pain_filtered.parquet` | Cleaned cohort with trajectory features |
-| `data/processed/pain_filtered.csv` | Same processed data as CSV |
-
-## Project layout
-
-```
-config/settings.yaml    # project ID, thresholds, output paths
-sql/pain_phenotypes.sql # BigQuery SQL (same logic as Colab)
-src/
-  bigquery_io.py        # client + query → DataFrame
-  pain_cleaning.py      # pain score parsing
-  pain_processing.py    # cohort filters and derived columns
-scripts/fetch_pain_data.py
-```
-
-## Reassessment analysis (models + figures)
-
-Among stays with initial and first reassessment documented (`final_modeling_dataset.csv`):
-
-```bash
-python scripts/run_reassessment_analysis.py
-```
-
-**Sequential OLS models** (outcome: log minutes to reassessment):
-
-| Model | Adjustment |
-|-------|------------|
-| M1 | Initial pain only |
-| M2 | + demographics (race incl. Unknown, age, sex, insurance, language) |
-| M3 | + clinical (ESI, diagnosis, trauma subtype, vitals) |
-| M4 | + workflow (5 de-identified year eras, shift, weekend, ED census/arrivals) |
-| M5 | + analgesic before reassessment |
-| M6 | Sensitivity: + disposition & ED LOS |
-
-**Outputs:**
-
-- `figures/main/` — 7 main figures (DAG, ECDF by race, sequential models, multi-factor forest, factor panels, ESI stratification, analgesic × disposition)
-- `figures/supplement/` — ECDF/adjusted plots for insurance, language, sex, age, diagnosis, shift, disposition, era trends, logistic windows, sensitivity
-- `data/processed/analysis/sequential_ols_results.csv`
-
-Year eras are ~20-year buckets over de-identified years 2110–2211 (not calendar years).
-
-## PART 2: Within-acuity and post-analgesic analyses
-
-Outputs in `figures/part2/` (does not overwrite main figures).
-
-```bash
-python scripts/run_part2_analysis.py
-```
-
-- **PART 2A:** Cox models within ESI strata (and acuity × pain severity); race/ethnicity vs White
-- **PART 2B:** Post-analgesic pathway (time zero = first analgesic; outcome = first pain score after analgesic)
-
-## Table 1 by race
-
-From `data/processed/modeling/final_modeling_dataset.csv` (vertical layout: characteristics as rows, race strata as columns):
-
-```bash
-python scripts/make_demographic_table.py
-```
-
-Outputs: `figures/table1_by_race.csv`, `figures/table1_by_race.png`
-
-Or in Python:
-
-```python
-from src.demographic_table import make_demographic_table
-
-make_demographic_table()
-```
-
-## Use in Python
-
-```python
-from src.bigquery_io import fetch_pain_cohort
-from src.pain_processing import process_pain_dataframe
-
-pain = fetch_pain_cohort("mimic-pain-ap")
-pain_filtered = process_pain_dataframe(pain)
-```
-
-## Notes
-
-- MIMIC data must **not** be committed to GitHub. Parquet paths are in `.gitignore`.
-- The query reads from `physionet-data.*` datasets; your GCP user must have PhysioNet BigQuery access linked to that project.

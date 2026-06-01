@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build Table 1 (cohort characteristics by race) as CSV + PNG in figures/."""
+"""Deprecated: Table 1 is built by scripts/run_analysis.py (manuscript cohort overview)."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.demographic_table import make_demographic_table  # noqa: E402
+from analysis.table1 import export_table1  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -31,8 +31,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
-    args = parse_args()
-    make_demographic_table(data_path=args.data, figures_dir=args.figures_dir)
+    export_table1()
 
 
 if __name__ == "__main__":

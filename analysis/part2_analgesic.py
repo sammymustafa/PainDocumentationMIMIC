@@ -89,7 +89,7 @@ def _logistic_windows(df: pd.DataFrame) -> pd.DataFrame:
     out = pd.DataFrame(rows)
     formula_base = (
         "outcome ~ C(race_ethnicity, Treatment(reference='White')) + initial_pain_score "
-        "+ triage_acuity + C(age_group) + C(sex) + C(insurance_group) + C(language_group)"
+        "+ triage_acuity + C(age_group) + C(sex) + C(insurance_group)"
     )
     for window, col in [(60, "reassessed_within_60_post_rx"), (120, "reassessed_within_120_post_rx")]:
         sub = df.dropna(
@@ -101,7 +101,6 @@ def _logistic_windows(df: pd.DataFrame) -> pd.DataFrame:
                 "age_group",
                 "sex",
                 "insurance_group",
-                "language_group",
             ]
         ).copy()
         sub["outcome"] = sub[col]

@@ -1,0 +1,67 @@
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Study design and data source}
+
+We conducted a retrospective cohort study of ED encounters with documented pain assessments using the Medical Information Mart for Intensive Care IV (MIMIC-IV) Emergency Department module.
+MIMIC-IV contains de-identified clinical data from a tertiary academic medical center; calendar years are reported as de-identified anchor years.
+The study was designed to characterize factors associated with time to first pain reassessment across routine ED care rather than to test a single demographic hypothesis.
+This report follows STROBE guidance for observational cohort studies \citep{vonElm2007STROBE}.
+
+\subsection{Study population}
+
+We identified ED stays with at least one documented initial pain score and eligible ED diagnoses.
+The analytic cohort was restricted to encounters with ED diagnoses of acute pancreatitis or trauma (including fall, fracture/dislocation, and other trauma subtypes), reflecting a clinically homogeneous population with expected pain documentation and reassessment workflows.
+Figure~\ref{fig:flow} summarizes cohort construction.
+
+Starting from \FlowAllED{} ED stays in the extract, we applied diagnosis-based inclusion, excluded small or unknown race/ethnicity categories, required a positive initial pain score with valid time-to-event information, excluded undocumented insurance, and required a documented Emergency Severity Index (ESI) triage level.
+The resulting primary analytic cohort comprised \CohortN{} encounters.
+
+\subsection{Outcome and follow-up}
+
+The primary outcome was time from the \textbf{initial documented pain score} to the \textbf{first subsequent pain reassessment}, measured in minutes.
+Patients without a documented reassessment before ED departure were censored at the end of the ED stay.
+A reassessment was defined as any pain score recorded strictly after the initial pain documentation timestamp.
+
+For descriptive reporting, we also calculated the proportion of patients reassessed within 60 and 120 minutes.
+In sensitivity analyses, we examined post-analgesic reassessment timing with time zero set to the first analgesic administration after initial pain documentation (Section~\ref{sec:sensitivity}).
+
+\subsection{Covariates}
+
+Covariates were organized into four sequential domains informed by clinical plausibility and care-pathway timing (conceptual diagram, Supplementary Figure~S1):
+
+\begin{itemize}
+  \item \textbf{M1 (clinical presentation):} initial pain score and injury/diagnosis group (acute pancreatitis reference).
+  \item \textbf{M2 (demographic and social):} race/ethnicity (White reference), insurance (private reference), preferred language (English reference when available), age group, and sex.
+  \item \textbf{M3 (illness severity):} ESI triage level, initial vital signs (heart rate, respiratory rate, systolic blood pressure, z-scored), and comorbidity count when ICD-based flags were available.
+  \item \textbf{M4 (ED workflow context):} arrival mode (walk-in reference), arrival shift (day reference), weekend arrival, ED crowding proxies (arrivals in the prior hour and census at the hour of initial pain documentation), and policy era (5-year de-identified year bins).
+\end{itemize}
+
+Disposition (admitted vs.\ discharged home) and analgesic treatment were considered downstream of initial pain documentation and were \textbf{not} included in the primary sequential models.
+Vital-sign coefficients were estimated in M3 but are reported in the supplement because they are adjusted for but not emphasized in the primary forest plot.
+
+\subsection{Statistical analysis}
+
+We used Cox proportional hazards models to estimate hazard ratios (HRs) for time to first reassessment.
+HR $>1$ indicates faster reassessment; HR $<1$ indicates slower reassessment.
+We fit four sequential models (M1--M4) adding covariate domains in the order above.
+\textbf{M4} was prespecified as the primary adjusted model for inference on demographic, insurance, and workflow associations.
+
+Additional analyses included:
+\begin{enumerate}
+  \item \textbf{Sequential attenuation plots} for race, insurance, and initial pain across M1--M4;
+  \item \textbf{Within-acuity models} using an M4-style specification within ESI strata (1--2, 3, and 4--5);
+  \item \textbf{Severe-pain sensitivity} restricting to initial pain scores 7--10 (and pain score 10);
+  \item \textbf{Temporal trend analysis} comparing unadjusted and M4-adjusted probabilities of reassessment within 60 minutes across policy eras, with a supplementary continuous-year Cox model;
+  \item \textbf{Post-analgesic pathway analysis} with time zero at first analgesic;
+  \item \textbf{Disposition pathway sensitivity} comparing M4 with M4 plus admitted-vs-home disposition;
+  \item \textbf{Inverse probability of treatment weighting (IPTW)} comparing Medicaid vs.\ private insurance, with propensity scores estimated using M1--M3 covariates only.
+\end{enumerate}
+\label{sec:sensitivity}
+
+Analyses were conducted in Python 3 using \texttt{lifelines} and \texttt{statsmodels}; code to reproduce all tables and figures is available in the study repository (\texttt{scripts/run\_analysis.py}).
+
+\subsection{Ethics}
+
+MIMIC-IV is a publicly available, de-identified database; credentialed users complete required training and data use agreements.
+Institutional review board approval was not required for secondary analysis of de-identified data per the data use agreement.

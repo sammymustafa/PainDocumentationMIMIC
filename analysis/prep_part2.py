@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from analysis._paths import REPO_ROOT, SURVIVAL_CSV
-from src.cohort_filters import filter_stay_cohort
+from analysis.prep_cohort import prep_analytic_cohort
 
 RAW_PAIN = REPO_ROOT / "data/raw/pain_events.csv"
 DURATION_COL = "duration_minutes"
@@ -32,36 +32,10 @@ def load_survival_cohort(path: Path | None = None) -> pd.DataFrame:
 
 
 def prep_part2a_cohort(df: pd.DataFrame | None = None) -> pd.DataFrame:
-    """Primary cohort for within-acuity analysis (same as main Cox, with valid fields)."""
+    """Primary analytic cohort (delegates to prep_cohort)."""
     if df is None:
         df = load_survival_cohort()
-
-    out = df.copy()
-    out["triage_acuity"] = pd.to_numeric(out["triage_acuity"], errors="coerce")
-    out = out[
-        out["triage_acuity"].notna()
-        & out["initial_pain_score"].notna()
-        & out["race_ethnicity"].isin(RACES)
-        & out[DURATION_COL].notna()
-        & (out[DURATION_COL] > 0)
-    ].copy()
-
-    out["esi_int"] = out["triage_acuity"].astype(int)
-    out["esi_group"] = pd.Series(index=out.index, dtype=object)
-    out.loc[out["esi_int"].isin([1, 2]), "esi_group"] = "ESI 1–2"
-    out.loc[out["esi_int"] == 3, "esi_group"] = "ESI 3"
-    out.loc[out["esi_int"].isin([4, 5]), "esi_group"] = "ESI 4–5"
-
-    out["pain_stratum"] = pd.cut(
-        out["initial_pain_score"],
-        bins=[-0.1, 3, 6, 10],
-        labels=["Pain 0–3", "Pain 4–6", "Pain 7–10"],
-        include_lowest=True,
-    )
-    out["pain_stratum_10"] = np.where(
-        out["initial_pain_score"] >= 9.5, "Pain = 10", out["pain_stratum"].astype(str)
-    )
-    return out.reset_index(drop=True)
+    return prep_analytic_cohort(df)
 
 
 def build_post_analgesic_cohort(

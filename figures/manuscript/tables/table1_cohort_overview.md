@@ -1,0 +1,94 @@
+# Table 1. Analytic cohort overview
+
+N = 17,204
+
+| Characteristic | Value |
+|---|---|
+| Characteristic | Overall
+(N=17,204) |
+| Demographics | — |
+| Age (years), mean (SD) | 56.2 (19.7) |
+|   Age 18-39, n (%) | 3,897 (22.7%) |
+|   Age 40-64, n (%) | 7,057 (41.0%) |
+|   Age 65+, n (%) | 6,250 (36.3%) |
+| Sex | — |
+|   F, n (%) | 9,797 (56.9%) |
+|   M, n (%) | 7,407 (43.1%) |
+| Race/ethnicity | — |
+|   Asian, n (%) | 527 (3.1%) |
+|   White, n (%) | 12,108 (70.4%) |
+|   Black, n (%) | 3,383 (19.7%) |
+|   Hispanic, n (%) | 1,186 (6.9%) |
+| Insurance (analytic cohort excludes undocumented) | — |
+|   Medicare | 8,015 (46.6%) |
+|   Private | 5,071 (29.5%) |
+|   Medicaid | 4,118 (23.9%) |
+| Language | — |
+|   English | 15,823 (92.0%) |
+|   Non-English | 1,380 (8.0%) |
+|   missing | 1 (0.0%) |
+| Clinical | — |
+| Triage acuity (ESI), mean (SD) | 2.7 (0.7) |
+|   ESI 1, n (%) | 878 (5.1%) |
+|   ESI 2, n (%) | 5,388 (31.3%) |
+|   ESI 3, n (%) | 9,266 (53.9%) |
+|   ESI 4, n (%) | 1,651 (9.6%) |
+|   ESI 5, n (%) | 21 (0.1%) |
+| Initial pain score, mean (SD) | 6.1 (2.6) |
+| Diagnosis: acute pancreatitis, n (%) | 1,246 (7.2%) |
+| Diagnosis: trauma, n (%) | 15,958 (92.8%) |
+|   fall | 8,274 (48.1%) |
+|   other_trauma | 6,659 (38.7%) |
+|   acute_pancreatitis | 1,246 (7.2%) |
+|   fracture_dislocation | 1,025 (6.0%) |
+| Outcomes (descriptive) | — |
+| Any reassessment, n (%) | 10,569 (61.4%) |
+| Reassessed within 60 min, n (%) | 1,651 (9.6%) |
+| Reassessed within 120 min, n (%) | 3,722 (21.6%) |
+| Minutes to reassessment, median (IQR) | 185 (96–311) |
+| Workflow | — |
+|   evening | 7,574 (44.0%) |
+|   day | 6,650 (38.7%) |
+|   night | 2,980 (17.3%) |
+| Weekend arrival, n (%) | 4,907 (28.5%) |
+| ED arrivals past 1 hr, mean (SD) | 2.1 (1.3) |
+| ED census at initial pain hour, mean (SD) | 4.3 (2.5) |
+|   Ambulance | 8,845 (51.4%) |
+|   Walk-in | 8,019 (46.6%) |
+|   Other arrival mode | 340 (2.0%) |
+| Disposition | — |
+|   HOME | 9,356 (54.4%) |
+|   ADMITTED | 7,119 (41.4%) |
+|   TRANSFER | 370 (2.2%) |
+|   OTHER | 359 (2.1%) |
+| Treatment | — |
+| Analgesic before reassessment or ED departure, n (%) | 7,629 (44.3%) |
+|   opioid | 4,647 (60.9%) |
+|   acetaminophen | 1,483 (19.4%) |
+|   NSAID | 1,284 (16.8%) |
+|   local_anesthetic | 211 (2.8%) |
+|   ketamine | 4 (0.1%) |
+| Year / policy era | — |
+| De-identified year, mean (SD) | 2157.0 (24.4) |
+|   2160–2164 | 1,121 (6.5%) |
+|   2175–2179 | 1,115 (6.5%) |
+|   2150–2154 | 1,097 (6.4%) |
+|   2155–2159 | 1,078 (6.3%) |
+|   2180–2184 | 1,066 (6.2%) |
+|   2130–2134 | 1,061 (6.2%) |
+|   2135–2139 | 1,054 (6.1%) |
+|   2140–2144 | 1,052 (6.1%) |
+|   2145–2149 | 1,051 (6.1%) |
+|   2170–2174 | 1,042 (6.1%) |
+|   2165–2169 | 1,009 (5.9%) |
+|   2185–2189 | 1,003 (5.8%) |
+|   2125–2129 | 972 (5.6%) |
+|   2120–2124 | 743 (4.3%) |
+|   2115–2119 | 700 (4.1%) |
+|   2190–2194 | 619 (3.6%) |
+|   2110–2114 | 536 (3.1%) |
+|   2195–2199 | 452 (2.6%) |
+|   2200–2204 | 304 (1.8%) |
+|   other_era | 129 (0.7%) |
+
+Footnotes: Analytic cohort excludes stays with undocumented insurance. Language is descriptive only (excluded from Cox models). Policy eras in models use 5-year bins on de-identified MIMIC years (sparse eras collapsed).

@@ -1,0 +1,46 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\graphicspath{{figures/}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+}
+
+\input{manuscript_stats.tex}
+
+\title{Patient, Clinical, and Workflow Factors Associated with Time to First Pain Reassessment in the Emergency Department}
+\author{[Authors and affiliations to be added]}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/00_abstract.tex}
+\end{abstract}
+
+\onehalfspacing
+
+\input{sections/01_introduction.tex}
+\input{sections/02_methods.tex}
+\input{sections/03_results.tex}
+\input{sections/04_discussion.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

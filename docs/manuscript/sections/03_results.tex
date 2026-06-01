@@ -1,0 +1,133 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Cohort characteristics and descriptive outcomes}
+
+The analytic cohort included \CohortN{} ED encounters; \CohortEvents{} (61.4\%) had at least one documented pain reassessment during the stay (Table~\ref{tab:cohort}).
+The mean age was 56.2 years (SD 19.7); 70.4\% of patients were White, 19.7\% Black, 6.9\% Hispanic, and 3.1\% Asian.
+Most encounters were trauma-related (92.8\%); acute pancreatitis accounted for 7.2\%.
+Insurance distribution was Medicare 46.6\%, private 29.5\%, and Medicaid 23.9\% (undocumented insurance excluded).
+Mean initial pain score was 6.1 (SD 2.6); mean ESI was 2.7 (SD 0.7).
+
+Reassessment was often delayed: the median time to first reassessment was 185 minutes (IQR 96--311).
+Only 9.6\% of patients were reassessed within 60 minutes and 21.6\% within 120 minutes.
+Unadjusted Kaplan--Meier curves showed separation by insurance and race/ethnicity (Figure~\ref{fig:km}); 60-minute reassessment rates varied by pain severity stratum (Figure~\ref{fig:rates60}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig02_cohort_flow.png}
+  \caption{Cohort construction for the primary analytic sample.}
+  \label{fig:flow}
+\end{figure}
+
+\input{sections/table1_cohort.tex}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig04_km_reassessment_overview.png}
+  \caption{Unadjusted cumulative probability of first pain reassessment by race/ethnicity, insurance, and ESI.}
+  \label{fig:km}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{fig05_reassessment_rates_60min.png}
+  \caption{Unadjusted proportion reassessed within 60 minutes by initial pain severity group and race/ethnicity or insurance.}
+  \label{fig:rates60}
+\end{figure}
+
+\subsection{Primary adjusted model: clinical severity and workflow}
+
+In the primary M4 Cox model (Figure~\ref{fig:m4forest}), clinical presentation and ED workflow factors were strongly associated with reassessment timing.
+Each one-point increase in initial pain score was associated with faster reassessment (HR \HRPainMfour{}).
+Higher ESI level (lower acuity) was associated with slower reassessment (HR \HRESIMfour{}).
+Ambulance arrival (vs.\ walk-in) and night shift (vs.\ day) were associated with faster reassessment (HR \HRAmbulanceMfour{} and HR \HRNightMfour{}, respectively).
+Weekend arrival and ED crowding variables showed weaker or null associations at conventional significance thresholds.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{fig06_m4_sectional_forest.png}
+  \caption{Primary adjusted Cox model (M4): hazard ratios for time to first pain reassessment.
+  HR $>1$: faster reassessment; HR $<1$: slower reassessment.
+  Vitals are adjusted in M3 but not displayed; other arrival mode is excluded from the main figure (see supplement).}
+  \label{fig:m4forest}
+\end{figure}
+
+\subsection{Insurance: strongest and most persistent disparity signal}
+
+Insurance showed the largest and most robust associations with reassessment timing.
+Compared with private insurance, Medicaid was associated with substantially slower reassessment in M4 (HR \HRMedicaidMfour{}).
+Medicare was also associated with slower reassessment (HR \HRMedicareMfour{}), though the magnitude was smaller than for Medicaid.
+
+Sequential attenuation demonstrated minimal change in the Medicaid association from M2 (\HRMedicaidMtwo{}) through M3 (\HRMedicaidMthree{}) to M4 (\HRMedicaidMfourSeq{}; Figure~\ref{fig:attenuation}).
+An insurance-focused analysis including Kaplan--Meier curves, within-acuity estimates, and pain-stratum models corroborated this pattern (Figure~\ref{fig:insurance}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig10_insurance_focused_analysis.png}
+  \caption{Insurance-focused analysis: unadjusted curves, M4 hazard ratios, within-acuity Medicaid estimates, and pain-stratum models.}
+  \label{fig:insurance}
+\end{figure}
+
+\subsection{Race and ethnicity: smaller effects with attenuation}
+
+Race and ethnicity associations were generally smaller than insurance and attenuated with sequential adjustment.
+Black patients had slower reassessment in M2 (HR \HRBlackMtwo{}) that moved toward the null in M4 (HR \HRBlackMfour{}; Figure~\ref{fig:attenuation}).
+Hispanic patients showed no meaningful association after full adjustment (HR \HRHispanicMfour{}).
+Asian patients had slower reassessment in M4 (HR \HRAsianMfour{}), but estimates were less stable in severe-pain sensitivity analyses (wide confidence intervals).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig08_sequential_attenuation_key_factors.png}
+  \caption{Sequential attenuation of key factors across models M1--M4 (race, insurance, initial pain).}
+  \label{fig:attenuation}
+\end{figure}
+
+\subsection{Within-acuity and severe-pain sensitivity analyses}
+
+Within-acuity models (Figure~\ref{fig:withinacuity}) suggested that insurance associations were most pronounced at higher acuity.
+Among ESI 1--2 encounters, Medicaid was associated with slower reassessment (HR \HRMedicaidESI12{}).
+Among ESI 3 encounters, Medicaid remained associated with slower reassessment (HR \HRMedicaidESI3{}).
+Estimates in ESI 4--5 were imprecise and directionally unstable, reflecting smaller event counts.
+
+In severe-pain sensitivity analyses (initial pain 7--10; Figure~\ref{fig:severe}), patterns were similar to the primary cohort: Medicaid HR \HRMedicaidSevere{} and Black vs.\ White HR \HRBlackSevere{}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig11_within_acuity_forests.png}
+  \caption{Within-acuity M4-style models: race/ethnicity and insurance by ESI stratum.}
+  \label{fig:withinacuity}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{fig12_severe_pain_sensitivity.png}
+  \caption{Severe-pain sensitivity analysis (pain 7--10): key M4 hazard ratios.}
+  \label{fig:severe}
+\end{figure}
+
+\subsection{Temporal trends}
+
+We observed no evidence of a meaningful secular trend in reassessment timing.
+In a supplementary Cox model with continuous de-identified year (M4 covariates), the HR per 5-year increase was \HRYearFive{}.
+Figure~\ref{fig:yeartrend} displays unadjusted and M4-adjusted probabilities of 60-minute reassessment by policy era; both series fluctuated between approximately 7\% and 12\% without a consistent directional pattern.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{fig07_year_era_reassessment_trend.png}
+  \caption{Temporal trend in 60-minute reassessment by de-identified policy era: unadjusted observed rates (bars) and M4-adjusted predicted probabilities (points) with 95\% confidence intervals.}
+  \label{fig:yeartrend}
+\end{figure}
+
+\subsection{Post-analgesic pathway analysis}
+
+In post-analgesic sensitivity analyses (time zero at first analgesic), cumulative reassessment curves by race/ethnicity largely overlapped (Figure~\ref{fig:postrx}).
+The multivariate log-rank test was not statistically significant in the primary trauma pain-score-10 subgroup, suggesting that demographic differences in the primary analysis are not primarily driven by post-treatment reassessment intervals.
+This supports interpreting insurance and race associations as operating earlier in the encounter or through pathways other than post-analgesic documentation alone.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig13_post_analgesic_pathway.png}
+  \caption{Pathway sensitivity: post-analgesic reassessment by race/ethnicity (time zero = first analgesic).}
+  \label{fig:postrx}
+\end{figure}
