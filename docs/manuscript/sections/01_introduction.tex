@@ -1,20 +1,31 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Pain is one of the most common reasons patients seek care in the emergency department (ED), and pain assessment is considered a core component of emergency care.
-Clinical guidelines emphasize not only the initial evaluation of pain but also ongoing reassessment, as repeated pain assessments help clinicians evaluate disease progression, treatment response, and the need for additional interventions.
-Despite its importance, pain reassessment remains a relatively understudied quality-of-care process compared with other ED performance metrics.
+Pain is among the most common reasons patients seek emergency care, yet it remains one of the most challenging clinical symptoms to assess and manage.
+Unlike objective physiologic measurements, pain is inherently subjective and relies entirely on patient self-report, making it vulnerable to variation in interpretation, documentation, and clinical response.
+Because pain cannot be directly observed or verified from the outside, its evaluation depends on a structured chain: a patient reports their pain, a clinician documents that report, and subsequent reassessments determine whether the symptom has changed and whether the response to treatment has been adequate.
+Each step in this chain introduces an opportunity for variation --- and potentially for inequity.
 
-Prior studies examining pain care have largely focused on treatment outcomes such as analgesic administration, opioid prescribing, or disparities in pain management.
-However, pain reassessment represents a distinct clinical process that reflects ongoing patient monitoring and clinical attention throughout the ED encounter.
-Delays in reassessment may affect symptom recognition, treatment escalation, and overall patient experience.
-Understanding which patients are reassessed more quickly---or more slowly---may therefore provide insight into how clinical attention is allocated within routine ED workflows.
+Pain reassessment is a critical component of high-quality emergency care.
+Reassessment provides an opportunity to determine whether symptoms have improved, whether additional treatment is warranted, and whether the patient's clinical trajectory is changing.
+Failure to reassess pain may contribute to undertreatment, delayed recognition of persistent or worsening symptoms, and inconsistent patient experiences across the ED visit.
+Importantly, because reassessment begins with the documentation of a patient's reported pain, variation in reassessment practices represents an early and measurable point at which differences in care quality emerge.
 
-Pain reassessment is likely influenced by multiple factors.
-Patient presentation characteristics such as pain severity, diagnosis, and physiologic instability may appropriately drive more frequent reassessment.
-At the same time, patient demographics, insurance status, language factors, triage acuity, arrival characteristics, and operational ED conditions may also influence reassessment timing.
-These factors may interact through complex care pathways that shape how patients move through the ED and how clinical resources are allocated.
+From a quality-improvement perspective, reassessment is attractive precisely because it is observable.
+Unlike the underlying experience of pain --- which cannot be extracted from the medical record --- whether and when a clinician returns to document a follow-up pain score is a concrete, auditable event.
+This distinguishes reassessment from many other potential disparity targets: it is protocol-adjacent, not dependent on a subjective clinical judgment, and therefore directly amenable to structured intervention.
+That we know so little about who receives timely reassessment and who does not represents a meaningful gap, particularly given the well-documented disparities in pain treatment at the point of analgesic administration.
 
-The objective of this study was to identify patient, clinical, and workflow factors associated with time to first pain reassessment in the emergency department.
-Rather than focusing on a single demographic characteristic, we sought to characterize the broader set of factors that may influence reassessment timing, including clinical presentation, demographic and social factors, illness severity, and operational workflow characteristics.
-Using a large electronic health record cohort, we evaluated associations under a sequential modeling framework designed to distinguish early-encounter patient and clinical factors from ED operational context.
+Prior studies have largely focused on analgesic administration, opioid prescribing, and treatment disparities.
+Pain reassessment is upstream of and distinct from these outcomes: it reflects whether the clinical system is monitoring a patient at all, independent of what treatment decisions follow.
+Disparities in reassessment may therefore reveal inequities in monitoring intensity that would be invisible in treatment-centered analyses --- and may persist even in settings where analgesic disparities have been addressed.
+
+Reassessment timing is shaped by multiple overlapping factors.
+Clinical characteristics such as pain severity, diagnosis, and physiologic instability may appropriately drive faster reassessment.
+At the same time, triage acuity, operational ED conditions, arrival characteristics, and patient demographics may also influence how quickly the system responds to a patient's reported pain.
+Critically, triage acuity may lie on the causal pathway between patient identity and reassessment, rather than acting as an independent confounder.
+If disparities in reassessment operate partly through the way triage encodes clinical urgency --- that is, if equivalent presentations receive different acuity assignments depending on patient characteristics --- then standard adjustment for ESI removes disparity from the model without removing it from the data.
+This distinction has direct implications for where quality-improvement efforts should be targeted.
+
+The objective of this study was to characterize patient, clinical, and operational factors associated with time to first pain reassessment in the emergency department, using a sequential modeling framework designed to distinguish early clinical signals from downstream triage and workflow context.
+Rather than focusing on a single demographic characteristic, we examined the broader structure of factors that predict system responsiveness to a patient's own report of their pain.

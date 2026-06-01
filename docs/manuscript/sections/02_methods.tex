@@ -4,63 +4,115 @@
 \subsection{Study design and data source}
 
 We conducted a retrospective cohort study of ED encounters with documented pain assessments using the Medical Information Mart for Intensive Care IV (MIMIC-IV) Emergency Department module.
-MIMIC-IV contains de-identified clinical data from a tertiary academic medical center; calendar years are reported as de-identified anchor years.
-The study was designed to characterize factors associated with time to first pain reassessment across routine ED care rather than to test a single demographic hypothesis.
+MIMIC-IV contains de-identified clinical data from a single tertiary academic medical center; calendar years are reported as de-identified anchor years to prevent re-identification.
+The study was designed to characterize factors associated with time to first pain reassessment across routine ED care, with particular attention to the causal structure linking patient characteristics, triage, and operational context to reassessment timing.
 This report follows STROBE guidance for observational cohort studies \citep{vonElm2007STROBE}.
+
+\subsection{Conceptual framework and causal structure}
+
+Pain reassessment occupies a specific position in the care pathway: it follows both an initial patient-reported pain score and a triage evaluation, and precedes definitive disposition.
+To clarify the relationships among covariates and to motivate the sequential modeling strategy, we specified a directed acyclic graph (DAG) prior to analysis (Figure~\ref{fig:dag}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{fig01_dag_causal_structure.png}
+  \caption{Directed acyclic graph (DAG) of hypothesized causal relationships between patient, clinical, and operational factors and time to first pain reassessment.
+  Nodes are organized into four tiers corresponding to the sequential covariate domains (M1--M4).
+  Solid arrows represent hypothesized direct causal paths; dashed arrows represent paths whose magnitude is not fully explained by measured intermediates.
+  Patient identity variables (M2) may influence reassessment both through triage acuity --- if equivalent presentations receive different ESI assignments depending on patient characteristics --- and through pathways that bypass triage entirely.
+  The sequential modeling strategy is designed to distinguish these two routes: attenuation of a demographic coefficient after adding ESI (M2 to M3) is interpreted as evidence that the effect operates through differential triage assignment, while persistence across all models points to unmeasured mechanisms in the care encounter.}
+  \label{fig:dag}
+\end{figure}
+
+The DAG encodes three key structural features.
+First, initial pain score and diagnosis are upstream clinical signals that both trigger reassessment directly and inform triage acuity; they represent the \textit{clinical presentation} tier (M1).
+Second, patient identity variables --- insurance status, race/ethnicity, and preferred language --- may influence reassessment through two distinct pathways: an indirect pathway operating through triage acuity (if patient identity shapes how clinical urgency is assigned) and a residual direct pathway not mediated by triage.
+Third, ESI triage acuity occupies an ambiguous structural position: it may act as a confounder (if it reflects true underlying severity that independently predicts reassessment), a mediator (if the same clinical presentation receives different acuity assignments depending on patient identity), or both.
+This ambiguity motivates the sequential modeling strategy described below, and is the reason we report results from models that progressively add covariate tiers rather than selecting a single adjusted specification.
+
+ED operational factors --- arrival mode, shift timing, and crowding --- are downstream of both triage and patient identity.
+Ambulance arrival in particular may lie on the pathway from insurance to reassessment (Medicaid patients are less likely to arrive by ambulance), and is therefore included in M4 as an operational covariate whose effect should be interpreted as part of the care pathway rather than an independent confounder to be removed.
 
 \subsection{Study population}
 
 We identified ED stays with at least one documented initial pain score and eligible ED diagnoses.
-The analytic cohort was restricted to encounters with ED diagnoses of acute pancreatitis or trauma (including fall, fracture/dislocation, and other trauma subtypes), reflecting a clinically homogeneous population with expected pain documentation and reassessment workflows.
-Figure~\ref{fig:flow} summarizes cohort construction.
+The analytic cohort was restricted to encounters with diagnoses of acute pancreatitis or trauma (including fall, fracture/dislocation, and other trauma subtypes).
+This restriction served a deliberate design purpose: both conditions carry a consistent clinical indication for ongoing pain monitoring, reducing heterogeneity in the expected reassessment standard and limiting the influence of diagnosis-specific documentation practices on the outcome.
+Cohort construction is summarized in Figure~\ref{fig:flow}.
 
-Starting from \FlowAllED{} ED stays in the extract, we applied diagnosis-based inclusion, excluded small or unknown race/ethnicity categories, required a positive initial pain score with valid time-to-event information, and required a documented Emergency Severity Index (ESI) triage level.
-Insurance categories in models included private (reference), Medicare, Medicaid, undocumented (missing payer documentation in the EHR), and uninsured (self-pay).
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig02_cohort_flow.png}
+  \caption{Cohort construction for the primary analytic sample. Starting from \FlowAllED{} ED stays in the MIMIC-IV extract, sequential exclusions yield the primary analytic cohort of \CohortN{} encounters.}
+  \label{fig:flow}
+\end{figure}
+
+Starting from \FlowAllED{} ED stays in the extract, we applied diagnosis-based inclusion, excluded small or unknown race/ethnicity categories, required a positive initial pain score with valid time-to-event information, excluded undocumented insurance, and required a documented ESI triage level.
 The resulting primary analytic cohort comprised \CohortN{} encounters.
+
+A note on missing demographic data: encounters with undocumented insurance were excluded from the primary cohort because insurance category is a primary exposure variable and missingness in this field likely reflects systematic documentation differences rather than random omission.
+We treat this exclusion as a study design decision rather than a missing-data problem, and report the volume of excluded encounters in Figure~\ref{fig:flow}.
+Sensitivity analyses among a cohort with complete demographic documentation are reported in the supplement.
 
 \subsection{Outcome and follow-up}
 
 The primary outcome was time from the \textbf{initial documented pain score} to the \textbf{first subsequent pain reassessment}, measured in minutes.
+This framing operationalizes the key research question: given that a patient's pain has been documented, how quickly does the clinical system respond with a follow-up assessment?
 Patients without a documented reassessment before ED departure were censored at the end of the ED stay.
 A reassessment was defined as any pain score recorded strictly after the initial pain documentation timestamp.
 
-For descriptive reporting, we also calculated the proportion of patients reassessed within 60 and 120 minutes.
+For descriptive reporting, we also calculated the proportion of patients reassessed within 60 and 120 minutes of the initial documentation.
 In sensitivity analyses, we examined post-analgesic reassessment timing with time zero set to the first analgesic administration after initial pain documentation (Section~\ref{sec:sensitivity}).
 
-\subsection{Covariates}
+\subsection{Covariates and sequential model design}
 
-Covariates were organized into four sequential domains informed by clinical plausibility and care-pathway timing (conceptual diagram, Supplementary Figure~S1):
+Covariates were organized into four sequential tiers, each corresponding to a distinct phase of the care pathway and a distinct causal tier in Figure~\ref{fig:dag}:
 
 \begin{itemize}
-  \item \textbf{M1 (clinical presentation):} initial pain score and injury/diagnosis group (acute pancreatitis reference).
-  \item \textbf{M2 (demographic and social):} race/ethnicity (White reference), insurance (private reference), preferred language (English reference when available), age group, and sex.
-  \item \textbf{M3 (illness severity):} ESI triage level, initial vital signs (heart rate, respiratory rate, systolic blood pressure, z-scored), and comorbidity count when ICD-based flags were available.
-  \item \textbf{M4 (ED workflow context):} arrival mode (walk-in reference), arrival shift (day reference), weekend arrival, ED crowding proxies (arrivals in the prior hour and census at the hour of initial pain documentation), and policy era (5-year de-identified year bins).
+  \item \textbf{M1 (clinical presentation):} initial pain score (continuous) and injury/diagnosis group (acute pancreatitis as reference category). These variables represent the clinical signal that initiates the reassessment process --- the patient's own report of their pain severity, and the clinical context in which it arises.
+
+  \item \textbf{M2 (demographic and social factors):} race/ethnicity (White as reference), insurance (private as reference), preferred language (English as reference when available), age group, and sex. These variables are upstream of triage assignment in the DAG and represent patient characteristics that may shape how the clinical signal is received and acted upon, independent of its objective severity.
+
+  \item \textbf{M3 (illness severity and triage):} ESI triage level, initial vital signs (heart rate, respiratory rate, and systolic blood pressure, each z-scored), and comorbidity count derived from linked ICD-based flags. As described in the conceptual framework, ESI occupies an ambiguous causal position. We include it at this tier to quantify how much of the demographic associations in M2 operate through triage assignment, while acknowledging that this adjustment may partially block causal pathways of interest in addition to controlling for confounding.
+
+  \item \textbf{M4 (ED workflow context):} arrival mode (walk-in as reference), arrival shift (day shift as reference), weekend arrival, and ED crowding proxies --- the number of new arrivals in the hour preceding the initial pain documentation and the total census at that hour. These variables capture operational conditions that vary across visits independently of patient characteristics and that may modify how quickly any given patient is monitored.
 \end{itemize}
 
-Disposition (admitted vs.\ discharged home) and analgesic treatment were considered downstream of initial pain documentation and were \textbf{not} included in the primary sequential models.
-Vital-sign coefficients were estimated in M3 but are reported in the supplement because they are adjusted for but not emphasized in the primary forest plot.
+Two variable categories were intentionally excluded from the primary sequential models.
+Disposition (admitted vs.\ discharged) occurs downstream of initial pain documentation and treatment decisions; including it would induce collider bias on the pathway between presentation and reassessment.
+Analgesic treatment similarly falls between initial pain assessment and reassessment and is treated as a pathway variable in dedicated sensitivity analyses rather than a confounder.
+Vital-sign coefficients are estimated in M3 and reported in the supplement; they are included for confounding control but are not the focus of primary inference.
 
 \subsection{Statistical analysis}
 
-We used Cox proportional hazards models to estimate hazard ratios (HRs) for time to first reassessment.
-HR $>1$ indicates faster reassessment; HR $<1$ indicates slower reassessment.
-We fit four sequential models (M1--M4) adding covariate domains in the order above.
-\textbf{M4} was prespecified as the primary adjusted model for inference on demographic, insurance, and workflow associations.
+We used Cox proportional hazards models to estimate hazard ratios (HRs) for time to first pain reassessment.
+An HR greater than 1 indicates faster reassessment (shorter time to event); an HR less than 1 indicates slower reassessment.
+We fit four models (M1 through M4) adding covariate tiers sequentially in the order above, with \textbf{M4} prespecified as the primary adjusted model for inference on demographic, insurance, and workflow associations.
 
-Additional analyses included:
-\begin{enumerate}
-  \item \textbf{Sequential attenuation plots} for race, insurance, and initial pain across M1--M4;
-  \item \textbf{Within-acuity models} using an M4-style specification within ESI strata (1--2, 3, and 4--5);
-  \item \textbf{Severe-pain sensitivity} restricting to initial pain scores 7--10 (and pain score 10);
-  \item \textbf{Temporal trend analysis} comparing unadjusted and M4-adjusted probabilities of reassessment within 60 minutes across policy eras, with a supplementary continuous-year Cox model;
-  \item \textbf{Post-analgesic pathway analysis} with time zero at first analgesic;
-  \item \textbf{Disposition pathway sensitivity} comparing M4 with M4 plus admitted-vs-home disposition;
-  \item \textbf{Inverse probability of treatment weighting (IPTW)} comparing Medicaid vs.\ private insurance, with propensity scores estimated using M1--M3 covariates only.
-\end{enumerate}
+The sequential structure serves an interpretive purpose beyond simple covariate adjustment.
+The change in a coefficient from M2 to M3 quantifies how much of the demographic association is attributable to differential triage assignment --- that is, how much of the apparent effect of race or insurance on reassessment operates through ESI acuity.
+The change from M3 to M4 quantifies additional attenuation through operational workflow factors.
+Coefficients that remain stable across M3 and M4 --- as observed for insurance --- indicate associations that are not explained by triage mix or operational context and may reflect structural or unmeasured factors in the care encounter.
+
+Sequential attenuation was examined graphically for the three primary exposure variables (race/ethnicity, insurance, and initial pain score) across all four models (Figure~\ref{fig:attenuation}).
+
+\paragraph{Additional analyses.}
 \label{sec:sensitivity}
+\begin{enumerate}
+  \item \textbf{Within-acuity models:} M4-specification models fit separately within ESI strata (1--2, 3, and 4--5), to evaluate whether demographic associations persist after removing cross-stratum ESI variation entirely. This analysis addresses whether the insurance association reflects triage-level confounding not adequately controlled by including ESI as a continuous covariate.
 
-Analyses were conducted in Python 3 using \texttt{lifelines} and \texttt{statsmodels}; code to reproduce all tables and figures is available in the study repository (\texttt{scripts/run\_analysis.py}).
+  \item \textbf{Severe-pain sensitivity:} Primary analysis restricted to encounters with initial pain scores of 7--10 (and a secondary restriction to pain score 10 only), to evaluate whether findings hold among patients with unambiguously high self-reported pain burden.
+
+  \item \textbf{Post-analgesic pathway analysis:} Time zero reset to the first analgesic administration after initial pain documentation, analyzing reassessment conditional on having received treatment. This analysis separates whether the system responds to a patient's initial pain report (primary outcome) from whether it monitors the response to treatment (post-analgesic outcome).
+
+  \item \textbf{Year-over-year trend analysis:} Unadjusted and M4-adjusted probabilities of reassessment within 60 minutes compared across de-identified 5-year policy eras, with a supplementary continuous-year Cox model. This analysis evaluates whether reassessment documentation practices changed across the observation window.
+
+  \item \textbf{Disposition pathway sensitivity:} M4 compared with M4 plus admitted-vs-home disposition as a covariate. Because disposition is a post-treatment variable, this model is not preferred for primary inference; it is reported to assess the degree to which disposition mediates workflow associations.
+
+  \item \textbf{Inverse probability of treatment weighting (IPTW):} Medicaid versus private insurance comparison with propensity scores estimated using M1 through M3 covariates only (excluding workflow), as a complementary approach to assess robustness of the primary regression-based estimate.
+\end{enumerate}
+
+Analyses were conducted in Python~3 using \texttt{lifelines} and \texttt{statsmodels}; code is available in the study repository (\texttt{scripts/run\_analysis.py}).
 
 \subsection{Ethics}
 

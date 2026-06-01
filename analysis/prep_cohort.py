@@ -15,6 +15,7 @@ from analysis.prep_survival import _arrival_mode, load_or_build_survival
 
 DURATION_COL = "duration_minutes"
 EVENT_COL = "reassessment_event"
+VALID_INSURANCE = frozenset({"private", "Medicaid", "Medicare"})
 
 
 def add_derived_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -47,6 +48,9 @@ def prep_analytic_cohort(df: pd.DataFrame | None = None) -> pd.DataFrame:
 
     if "language_group" in out.columns:
         out.loc[out["language_group"] == "undocumented", "language_group"] = np.nan
+
+    if "insurance_group" in out.columns:
+        out = out[out["insurance_group"].isin(VALID_INSURANCE)].copy()
 
     out = add_derived_columns(out)
 

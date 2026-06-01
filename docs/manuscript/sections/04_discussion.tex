@@ -1,54 +1,86 @@
 \section{Discussion}
 \label{sec:discussion}
 
-In this retrospective cohort of ED encounters with documented pain assessments, time to first pain reassessment was associated with a combination of clinical presentation, operational workflow, and insurance coverage.
-Higher initial pain, ambulance arrival, and night shift were associated with faster reassessment, consistent with prioritization of clinically salient or higher-intensity presentations.
-Lower triage acuity (higher ESI level) was associated with slower reassessment, which may reflect appropriate de-emphasis of repeat assessment among lower-acuity patients or differences in nursing and physician workflows by acuity zone.
+In this retrospective cohort of ED encounters with documented pain assessments, we asked whether the emergency department responds equally to a patient's reported pain --- and found that it does not.
+Reassessment was frequently delayed: fewer than one in ten patients had their pain reassessed within 60 minutes of initial documentation, and the median time to reassessment exceeded three hours.
+The factors associated with reassessment timing form a coherent picture: clinical signals (higher reported pain, ambulance arrival) accelerate the system's response, while operational and social factors introduce substantial variation beyond what clinical severity alone would predict.
 
-\subsection{Insurance and monitoring intensity}
+\subsection{The clinical response to pain is appropriately shaped by severity --- but incompletely}
 
-The most consistent disparity signal was insurance.
-Medicaid patients experienced substantially slower reassessment than privately insured patients, with minimal attenuation after adjustment for demographics, severity, and workflow.
-Within-acuity analyses suggested persistence in higher-acuity strata (ESI 1--2 and ESI 3), arguing against complete explanation by triage mix alone.
-Medicare patients also had slower reassessment, though effect sizes were smaller than for Medicaid.
+The strongest and most clinically expected associations were with the pain report itself and with triage acuity.
+Patients who reported higher pain were reassessed more quickly; patients assigned lower ESI acuity were reassessed more slowly.
+This pattern is broadly consistent with appropriate clinical prioritization: the emergency department allocates monitoring attention in proportion to perceived urgency.
+Night-shift associations likely reflect lower census conditions that facilitate more frequent patient contact.
 
-These findings align with broader literature on differential processes of care by payer status, but they highlight a distinct quality dimension---ongoing pain monitoring rather than analgesic prescribing alone.
-Slower reassessment may reflect documentation practices, staffing patterns, patient advocacy differences, or unmeasured clinical complexity.
-Because reassessment is a process measure tied to guideline-concordant care, persistent insurance gaps warrant quality-improvement attention and prospective validation.
+However, the aggregate reassessment rates in this cohort suggest that even among patients with high reported pain, timely reassessment is not the norm.
+Only 9.6\% of patients were reassessed within 60 minutes.
+If the system is responding appropriately to a pain signal, this baseline rate warrants attention as a quality benchmark independent of any disparity analysis.
 
-\subsection{Race, ethnicity, and attenuation}
+\subsection{ESI attenuation as evidence of a disparity mechanism, not its absence}
 
-Race and ethnicity associations were smaller and more sensitive to adjustment.
-Black patients had slower reassessment in minimally adjusted models that attenuated after severity and workflow adjustment.
-Hispanic patients showed no independent association in the primary model.
-Asian patients had slower reassessment in M4, but severe-pain and within-stratum estimates were imprecise.
-We caution against over-interpreting race/ethnicity contrasts given overlapping social determinants, insurance mix, and documentation patterns not fully captured in administrative data.
+The most important interpretive point in this paper concerns what the attenuation of race and ethnicity coefficients across sequential models actually means.
+Black patients had slower reassessment than White patients in models adjusted only for clinical presentation and demographics.
+This association attenuated substantially after adding ESI triage acuity.
+A naive reading of this pattern --- common in epidemiologic reporting --- would conclude that the disparity disappears once clinical factors are controlled, implying no inequity once case mix is accounted for.
+That reading is incorrect, and stating it plainly matters for how findings like these get translated into policy.
 
-\subsection{Workflow, severity, and temporal stability}
+ESI triage acuity is not a neutral measure of objective clinical severity.
+It is a judgment, made by a provider, about how urgently a patient's presentation requires attention.
+That judgment is susceptible to the same implicit biases documented in pain treatment, analgesic prescribing, and clinical assessment more broadly.
+Empirical evidence supports this: studies have found that Black patients are more likely to be triaged to lower-acuity or fast-track areas relative to White patients with equivalent presenting complaints \citep{Vigil2014,Pines2009}, and that the ESI instrument relies on subjective determinations --- particularly resource prediction --- that are especially prone to unintentional racial bias \citep{Fernandes2005}.
+When a Black patient and a White patient present with the same pain score and the same diagnosis, and receive different ESI assignments, those assignments carry the disparity forward into every downstream outcome that ESI predicts --- including reassessment timing.
 
-Workflow variables complemented clinical severity in explaining reassessment timing.
-Ambulance and night-shift associations may reflect triage intensity, trauma protocols, or staffing models rather than patient preference alone.
-The absence of a secular trend in 60-minute reassessment rates suggests that documented reassessment practice did not materially improve over the study's de-identified year window, despite national emphasis on pain management quality.
+Adjusting for ESI in this setting does not control for confounding; it blocks a causal pathway.
+The attenuation of the Black--White coefficient from M2 to M3 is therefore evidence that differential triage assignment is a \textit{mechanism} through which racial disparities in reassessment arise --- not evidence that the disparity is explained away.
+The residual M4 coefficient represents the portion of the disparity not mediated through measured triage and workflow variables, not the total disparity.
+Total disparity estimates that do not adjust for ESI, or that treat ESI as a mediator rather than a confounder, would show larger and more persistent race effects.
 
-\subsection{Pathway analyses and interpretation}
+This distinction matters for intervention design.
+If racial disparities in reassessment operate through triage assignment, then interventions that target downstream monitoring protocols without addressing triage equity will be insufficient.
+The triage process itself --- the point at which a provider encodes their assessment of urgency --- is where the disparity is generated.
 
-Post-analgesic sensitivity analyses showed largely overlapping reassessment curves by race/ethnicity, implying that demographic patterns in the primary analysis are not driven principally by differences after treatment initiation.
-Disposition pathway models (M4 plus admitted vs.\ home) were examined separately because disposition occurs downstream of initial pain documentation; these analyses inform mediation hypotheses but should not be interpreted as primary causal adjustments.
-Inverse probability weighting for Medicaid vs.\ private insurance (propensity scores using pre-workflow covariates) can be reported in the supplement to assess robustness to measured confounding.
+\subsection{Insurance: a disparity not explained by the care pathway}
+
+The most striking evidence of inequitable pain monitoring in this study is not the average Medicaid--private difference across the full cohort --- it is the persistence of that difference among patients reporting severe pain.
+Among patients with initial pain scores of 7--10, Medicaid patients were still reassessed substantially more slowly than privately insured patients (HR \HRMedicaidSevere{}).
+These patients have already cleared the threshold that should, on clinical grounds alone, prompt monitoring: they reported severe pain at triage.
+The insurance gradient that persists in this subgroup is therefore not attributable to Medicaid patients appearing lower-acuity, reporting lower pain, or being clinically less urgent.
+It reflects something else --- something in the care encounter itself that is associated with payer status and that shapes how often patients are checked on.
+
+Across the full cohort, the Medicaid association showed minimal attenuation from M2 through M4, in contrast to the race and ethnicity findings.
+Medicaid patients were reassessed approximately 20\% more slowly than privately insured patients at the same triage level, with the same initial pain score, arriving by the same mode, during the same shift.
+Within-acuity analyses confirm this pattern persists even among ESI 1--2 patients (HR \HRMedicaidESIhigh{}) --- those whose triage designation explicitly signals the highest clinical urgency.
+When the clinical system has already correctly identified a patient as high-priority, insurance status should have no bearing on how frequently that patient is monitored.
+That it does suggests the disparity is embedded in the routine fabric of the care encounter rather than in misclassification of clinical urgency.
+
+The unmeasured mechanisms are plausible: differences in how nursing attention is distributed across patients, in how assertively patients advocate for themselves, in implicit provider assumptions about which patients require close monitoring, or in structural factors such as bed assignment and staffing ratios that correlate with payer mix at the unit level.
+Distinguishing among these mechanisms requires prospective data beyond what administrative records can provide.
+
+What administrative data can establish --- and what this study does establish --- is that the disparity is real, robust, and not attributable to measured clinical or operational factors.
+Because reassessment is directly observable, protocol-adjacent, and not dependent on a subjective clinical judgment, it is a more tractable quality-improvement target than treatment disparities.
+Structured reassessment protocols tied to ESI level, nursing workflow checklists, or electronic alerts for time-since-last-pain-documentation are all interventions that operate at the level where this disparity appears to live.
+
+\subsection{Temporal stability}
+
+Reassessment rates did not improve meaningfully across the study period, despite national emphasis on pain management quality during this interval.
+Both unadjusted and adjusted estimates of 60-minute reassessment fluctuated between approximately 7\% and 12\% without directional improvement across policy eras.
+This stability suggests that reassessment documentation practices were not materially affected by broader quality initiatives --- motivating explicit inclusion of reassessment metrics in future quality measurement frameworks.
 
 \subsection{Limitations}
 
-This study has important limitations.
-Data come from a single academic center via MIMIC-IV; generalizability to community EDs may be limited.
-The cohort was restricted to acute pancreatitis and trauma diagnoses to ensure a population with expected pain documentation; findings may not extend to all ED presentations.
-Pain scores and reassessment reflect documentation and workflow, not necessarily unobserved patient symptoms.
-We could not fully account for analgesic timing, provider behavior, or social support.
-Comorbidity measurement depended on linked ICD flags.
-De-identified calendar years preclude direct mapping to policy interventions.
-Other arrival mode was heterogeneous and retained only in supplemental analyses.
+This study has several important limitations.
+Data come from a single academic medical center via MIMIC-IV; findings may not generalize to community or safety-net EDs, which may have different staffing structures, patient populations, and documentation practices.
+The cohort was restricted to acute pancreatitis and trauma diagnoses; findings should not be extrapolated to all ED pain presentations.
+Pain scores and reassessment timestamps reflect documentation behavior, which may differ from the underlying clinical activity --- a nurse who checks on a patient but does not document a pain score would not contribute a reassessment event in this analysis.
+We could not fully account for analgesic timing, provider-level variation, or patient advocacy behaviors that may mediate or moderate the associations we observe.
+Comorbidity measurement depended on linked ICD flags, which may be incomplete.
+De-identified calendar years prevent direct mapping to specific policy interventions or institutional changes.
+Finally, causal interpretation of the sequential model coefficients requires the DAG assumptions to hold; if ESI assignment is influenced by unmeasured variables that also affect reassessment, the structural interpretation of the attenuation pattern may be incorrect.
 
 \subsection{Conclusions}
 
-Pain reassessment timing in the ED reflects clinical presentation and operational context, with insurance-based differences that persist after multivariable adjustment and within triage-acuity strata.
+Pain is a subjective experience that requires documentation to become visible to the clinical system, and reassessment to be managed over time.
+In this cohort, the emergency department's response to a patient's reported pain varied substantially with clinical, operational, and social factors --- and this variation was not fully explained by differences in measured clinical severity.
+The pattern of results suggests that inequities in pain reassessment may be embedded in triage pathways for some demographic groups and in unmeasured aspects of care allocation for others.
 Pain reassessment should be considered alongside analgesic outcomes in equity-oriented quality assessment.
-Future work should validate these associations in multi-center cohorts, link reassessment timing to patient-reported outcomes, and evaluate interventions that standardize reassessment across payer groups.
+Future work should validate these associations in multi-center cohorts, link reassessment timing to patient-reported pain outcomes, and evaluate targeted interventions to standardize reassessment across payer groups and triage strata.

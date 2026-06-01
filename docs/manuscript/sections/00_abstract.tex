@@ -1,19 +1,23 @@
 \textbf{Background:}
-Pain reassessment is a core component of emergency care, yet factors associated with the timing of repeat pain assessment remain understudied compared with analgesic treatment outcomes.
+Pain is the most common presenting symptom in the emergency department, yet its subjective nature makes it uniquely vulnerable to inequities in clinical response.
+Disparities in analgesic treatment are well-documented, but pain reassessment --- whether a clinician returns to check on a patient after an initial pain score is recorded --- is an upstream, quantifiable process-of-care measure that shapes treatment decisions and patient outcomes yet remains poorly characterized.
 
 \textbf{Methods:}
 We conducted a retrospective cohort study of emergency department (ED) encounters with documented pain assessments using the MIMIC-IV Emergency Department database.
-The primary outcome was time from the initial documented pain score to the first subsequent reassessment.
-We fit Cox proportional hazards models with sequential adjustment for clinical presentation (M1), demographic and social factors (M2), illness severity (M3), and ED workflow context (M4).
-Sensitivity analyses included within--acuity models, severe-pain subsets, post-analgesic reassessment timing, and temporal trend analyses.
+The primary outcome was time from the initial documented pain score to the first subsequent reassessment, analyzed using Cox proportional hazards models with sequential adjustment for clinical presentation (M1), demographic and social factors (M2), illness severity and triage (M3), and ED workflow context (M4).
+Sensitivity analyses included within-acuity models, severe-pain subsets, post-analgesic reassessment timing, and year-over-year trend analyses.
 
 \textbf{Results:}
-Among \CohortN{} encounters with a documented reassessment (\CohortEvents{} events), clinical presentation and workflow factors were strongly associated with reassessment timing.
-In the primary adjusted model (M4), higher initial pain (HR \HRPainMfour{}) and ambulance arrival (HR \HRAmbulanceMfour{}) were associated with faster reassessment, whereas lower triage acuity---higher Emergency Severity Index (ESI) level---was associated with slower reassessment (HR \HRESIMfour{}).
-Medicaid insurance was associated with slower reassessment compared with private insurance (HR \HRMedicaidMfour{}), with minimal attenuation across sequential models.
-Race and ethnicity associations were smaller and attenuated after adjustment for severity and workflow.
-No meaningful secular trend in reassessment was observed (HR per 5-year increase \HRYearFive{}).
+Among \CohortN{} encounters, \CohortEvents{} (61.4\%) had a documented reassessment during the ED stay.
+Median time to reassessment was 185 minutes (IQR 96--311); only 9.6\% of patients were reassessed within 60 minutes.
+Higher initial pain score (HR \HRPainMfour{}) and ambulance arrival (HR \HRAmbulanceMfour{}) were associated with faster reassessment.
+Medicaid insurance was associated with substantially slower reassessment compared with private insurance (HR \HRMedicaidMfour{}), with minimal attenuation across sequential models and within triage-acuity strata --- including among patients with the highest-acuity triage designations and among those reporting severe pain.
+Race and ethnicity associations in unadjusted models attenuated substantially after adjustment for ESI triage acuity.
+Critically, this attenuation is consistent with ESI acting as a mediator of racial disparities in reassessment --- reflecting differential triage assignment for equivalent presentations --- rather than evidence that no disparity exists.
+Reassessment rates did not improve meaningfully across the study period (HR per 5-year increase \HRYearFive{}).
 
 \textbf{Conclusions:}
-Pain reassessment timing reflects a combination of clinical presentation and operational ED factors.
-Insurance-based differences persisted after multivariable adjustment and within triage-acuity strata, suggesting a disparity in monitoring intensity that warrants further quality-improvement attention.
+Pain reassessment is frequently delayed and inequitably distributed.
+Insurance-based differences persist after full adjustment, pointing to unmeasured factors in the care encounter.
+Race/ethnicity effects appear to operate through triage pathways, implicating acuity assignment itself as a mechanism of inequity.
+Because reassessment is directly observable and protocol-adjacent, both findings identify concrete targets for quality improvement.

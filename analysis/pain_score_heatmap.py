@@ -156,7 +156,6 @@ def _build_rows() -> list[HeatmapRow]:
     for ins, lab in [
         ("Medicare", "Medicare vs private"),
         ("Medicaid", "Medicaid vs private"),
-        ("undocumented", "Insurance undocumented vs private"),
     ]:
         rows.append(
             HeatmapRow(

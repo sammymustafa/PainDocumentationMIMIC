@@ -69,8 +69,6 @@ def build_table1(df: pd.DataFrame | None = None) -> pd.DataFrame:
         "private": "Private",
         "Medicaid": "Medicaid",
         "Medicare": "Medicare",
-        "undocumented": "Undocumented (missing payer in EHR)",
-        "uninsured": "Uninsured (self-pay)",
     }
     for label, val in _cat_rows(df, "insurance_group", ins_map):
         add_row(label, val)
@@ -179,7 +177,8 @@ def _to_markdown(table: pd.DataFrame) -> str:
         lines.append(f"| {row.iloc[0]} | {row.iloc[1]} |")
     lines.append("")
     lines.append(
-        "Footnotes: Insurance includes undocumented (missing payer) and uninsured (self-pay) vs private reference in Cox. "
+        "Footnotes: Encounters with missing or unclassified payer documentation were excluded; "
+        "Cox models use private (reference), Medicare, and Medicaid. "
         "Language undocumented is descriptive only (excluded from Cox models). "
         "Policy eras in models use 5-year bins on de-identified MIMIC years (sparse eras collapsed)."
     )

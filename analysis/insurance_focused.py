@@ -15,7 +15,7 @@ from analysis.cox_models import formula_m4
 from analysis.prep_cohort import prep_analytic_cohort
 from analysis.sectional_forest import exclude_term
 
-INS_LEVELS = ["private", "Medicaid", "Medicare", "undocumented", "uninsured"]
+INS_LEVELS = ["private", "Medicaid", "Medicare"]
 PAIN_BINS = [("1-3", 1, 3), ("4-6", 4, 6), ("7-10", 7, 10)]
 
 
@@ -140,7 +140,7 @@ def run_insurance_focused(
     _forest_panel(axes[1, 1], by_pain, "D. M4 HRs by initial pain group")
 
     fig.suptitle(
-        "Insurance and pain reassessment (documented insurance; M4 primary model)",
+        "Insurance and pain reassessment (documented insurance only; M4 primary model)",
         fontweight="bold",
         fontsize=12,
     )

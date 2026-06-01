@@ -72,8 +72,6 @@ def main() -> None:
         m4cmd("HRNightMfour", "arrival_shift", "night"),
         m4cmd("HRMedicaidMfour", "insurance_group", "Medicaid"),
         m4cmd("HRMedicareMfour", "insurance_group", "Medicare"),
-        m4cmd("HRUndocumentedMfour", "insurance_group", "undocumented"),
-        m4cmd("HRUninsuredMfour", "insurance_group", "uninsured"),
         m4cmd("HRBlackMfour", "race_ethnicity", "Black"),
         m4cmd("HRHispanicMfour", "race_ethnicity", "Hispanic"),
         m4cmd("HRAsianMfour", "race_ethnicity", "Asian"),

@@ -20,7 +20,7 @@ FLOW_STEPS = [
     ("ap_or_trauma_stays", "Filter acute pancreatitis or trauma (ED diagnosis)", "mid"),
     ("initial_pain_documented", "Extract initial pain scores (>0) with timestamps", "mid"),
     ("after_nonmissing_esi", "Require documented ESI / triage acuity", "mid"),
-    ("primary_analytic_cohort", "Primary analytic cohort", "end"),
+    ("primary_analytic_cohort", "Primary analytic cohort (documented insurance)", "end"),
 ]
 
 COLOR_END = "#f4c4c4"
@@ -172,9 +172,7 @@ def fig03_table1_overview(table: pd.DataFrame, path: Path | None = None) -> None
 def fig04_km(df: pd.DataFrame, path: Path | None = None) -> None:
     path = path or MANUSCRIPT_DIR / "fig04_km_reassessment_overview.png"
     ins_levels = [
-        x
-        for x in ["private", "Medicaid", "Medicare", "undocumented", "uninsured"]
-        if x in df["insurance_group"].unique()
+        x for x in ["private", "Medicaid", "Medicare"] if x in df["insurance_group"].unique()
     ]
     panels = [
         ("race_ethnicity", RACES, "Race/ethnicity"),

@@ -11,7 +11,10 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
-\graphicspath{{figures/}}
+% Figures live in PainDocumentationMIMIC/figures/manuscript/
+% and PainDocumentationMIMIC/figures/manuscript/appendix/
+% relative to this file at PainDocumentationMIMIC/docs/manuscript/
+\graphicspath{{../../figures/manuscript/}{../../figures/manuscript/appendix/}}
 
 \hypersetup{
   colorlinks=true,
@@ -22,7 +25,7 @@
 
 \input{manuscript_stats.tex}
 
-\title{Patient, Clinical, and Workflow Factors Associated with Time to First Pain Reassessment in the Emergency Department}
+\title{Measuring the Response to Pain: Factors Associated with Time to Reassessment in the Emergency Department}
 \author{[Authors and affiliations to be added]}
 \date{\today}
 
@@ -42,5 +45,9 @@
 
 \bibliographystyle{plainnat}
 \bibliography{references}
+
+\clearpage
+\appendix
+\input{sections/05_supplement_note.tex}
 
 \end{document}

@@ -25,5 +25,5 @@ Key methods and data sources for this analysis. Add full citations in the manusc
 ## Study-specific notes
 
 - De-identified MIMIC calendar years (e.g., 2110–2211) are **not** calendar dates; 5-year `year_era` bins are policy-era proxies for temporal trend sensitivity only.
-- **Undocumented insurance** (missing payer in EHR) and **uninsured** (self-pay) are included as insurance categories in Cox models (reference: private).
+- Stays with **undocumented insurance** are excluded from analytic models (missing EHR documentation, not a substantive payer category).
 - **Language** is reported descriptively in Table 1 only; it is not adjusted in Cox models due to high missing/undocumented documentation.
