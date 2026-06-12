@@ -3,8 +3,9 @@
 
 \subsection{Study design and data source}
 
-We conducted a retrospective cohort study of ED encounters with documented pain assessments using the Medical Information Mart for Intensive Care IV (MIMIC-IV) Emergency Department module.
-MIMIC-IV contains de-identified clinical data from a single tertiary academic medical center; calendar years are reported as de-identified anchor years to prevent re-identification.
+We conducted a retrospective cohort study of ED encounters with documented pain assessments using the MIMIC-IV Emergency Department module (MIMIC-IV-ED, version 2.2) \citep{Johnson2023MIMICIVED}.
+MIMIC-IV-ED contains de-identified clinical data from a single tertiary academic medical center; calendar years are reported as de-identified anchor years to prevent re-identification.
+Demographic and insurance data were supplemented from the MIMIC-IV hospital module.
 The study was designed to characterize factors associated with time to first pain reassessment across routine ED care, with particular attention to the causal structure linking patient characteristics, triage, and operational context to reassessment timing.
 This report follows STROBE guidance for observational cohort studies \citep{vonElm2007STROBE}.
 
@@ -15,12 +16,13 @@ To clarify the relationships among covariates and to motivate the sequential mod
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{fig01_dag_causal_structure.png}
-  \caption{Directed acyclic graph (DAG) of hypothesized causal relationships between patient, clinical, and operational factors and time to first pain reassessment.
-  Nodes are organized into four tiers corresponding to the sequential covariate domains (M1--M4).
-  Solid arrows represent hypothesized direct causal paths; dashed arrows represent paths whose magnitude is not fully explained by measured intermediates.
+  \includegraphics[width=\linewidth]{fig_main_conceptual_framework.png}
+  \caption{Conceptual framework for sequential modeling.
+  Boxes represent covariate domains arranged in hypothesized temporal order from left (patient identity and social factors determined before the visit) to right (ED workflow context).
+  Solid arrows represent hypothesized relationships informing covariate ordering in the sequential models M1--M4; dashed arrows indicate associations not fully explained by measured pathway variables.
   Patient identity variables (M2) may influence reassessment both through triage acuity --- if equivalent presentations receive different ESI assignments depending on patient characteristics --- and through pathways that bypass triage entirely.
-  The sequential modeling strategy is designed to distinguish these two routes: attenuation of a demographic coefficient after adding ESI (M2 to M3) is interpreted as evidence that the effect operates through differential triage assignment, while persistence across all models points to unmeasured mechanisms in the care encounter.}
+  The sequential modeling strategy is designed to distinguish these two routes: attenuation of a demographic coefficient after adding ESI (M2 to M3) is interpreted as evidence that the effect operates through differential triage assignment, while persistence across all models points to unmeasured mechanisms in the care encounter.
+  This figure does not assert causal identification; it describes the conceptual basis for covariate sequencing.}
   \label{fig:dag}
 \end{figure}
 
@@ -42,8 +44,8 @@ Cohort construction is summarized in Figure~\ref{fig:flow}.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\linewidth]{fig02_cohort_flow.png}
-  \caption{Cohort construction for the primary analytic sample. Starting from \FlowAllED{} ED stays in the MIMIC-IV extract, sequential exclusions yield the primary analytic cohort of \CohortN{} encounters.}
+  \includegraphics[width=0.85\linewidth]{fig_main_strobe_flow.png}
+  \caption{STROBE-style cohort construction flow diagram. Starting from \FlowAllED{} ED stays in the MIMIC-IV-ED extract, sequential exclusions yield the primary analytic cohort of \CohortN{} encounters. Exclusion counts appear in boxes branching to the right.}
   \label{fig:flow}
 \end{figure}
 
@@ -110,11 +112,13 @@ Sequential attenuation was examined graphically for the three primary exposure v
   \item \textbf{Disposition pathway sensitivity:} M4 compared with M4 plus admitted-vs-home disposition as a covariate. Because disposition is a post-treatment variable, this model is not preferred for primary inference; it is reported to assess the degree to which disposition mediates workflow associations.
 
   \item \textbf{Inverse probability of treatment weighting (IPTW):} Medicaid versus private insurance comparison with propensity scores estimated using M1 through M3 covariates only (excluding workflow), as a complementary approach to assess robustness of the primary regression-based estimate.
+
+  \item \textbf{Competing-risk sensitivity analysis (Fine--Gray):} The primary Cox model censors patients without reassessment at ED departure; this treats departure as non-informative censoring. To assess whether differential rates of early ED departure bias the primary estimates, we fit a Fine--Gray subdistribution hazard model treating ED departure without reassessment as a competing event (event code 2) and reassessment as the event of interest (event code 1). The full M4 covariate set was used. Subdistribution hazard ratios (sHRs) and cumulative incidence functions (Aalen--Johansen estimator) by insurance group are reported in Supplementary Table~S2 and Supplementary Figure~S1. Analysis was conducted in R~4.5.2 using the \texttt{cmprsk} package (version 2.2.12).
 \end{enumerate}
 
 Analyses were conducted in Python~3 using \texttt{lifelines} and \texttt{statsmodels}; code is available in the study repository (\texttt{scripts/run\_analysis.py}).
 
 \subsection{Ethics}
 
-MIMIC-IV is a publicly available, de-identified database; credentialed users complete required training and data use agreements.
+MIMIC-IV-ED is a publicly available, de-identified database; credentialed users complete required training and data use agreements.
 Institutional review board approval was not required for secondary analysis of de-identified data per the data use agreement.

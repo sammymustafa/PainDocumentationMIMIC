@@ -22,9 +22,9 @@ Code to reproduce all analyses and figures is available in \texttt{scripts/run\_
     \toprule
     Vital sign (z-scored) & HR (95\% CI) & $p$-value \\
     \midrule
-    Heart rate & 1.025 (1.004--1.047) & 0.019 \\
-    Respiratory rate & 1.009 (0.999--1.019) & 0.082 \\
-    Systolic blood pressure & 0.995 (0.977--1.013) & 0.575 \\
+    Heart rate & 1.03 (1.00--1.05) & 0.019 \\
+    Respiratory rate & 1.01 (1.00--1.02) & 0.082 \\
+    Systolic blood pressure & 0.99 (0.98--1.01) & 0.575 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -64,3 +64,35 @@ Code to reproduce all analyses and figures is available in \texttt{scripts/run\_
   Race~$\times$~ESI, insurance~$\times$~ESI, and year-era interaction terms on the M4 covariate set.}
   \label{fig:interactions_supp}
 \end{figure}
+
+% ── Fine-Gray competing-risk sensitivity ──────────────────────────────────────
+\subsection*{Supplementary: Competing-risk sensitivity analysis (Fine--Gray)}
+
+The primary Cox model censors patients without reassessment at ED departure, which assumes that departure is non-informative with respect to the reassessment process.
+To test whether differential early departure rates bias the primary estimates, we fit a Fine--Gray subdistribution hazard model \citep{Fine1999} treating ED departure without reassessment as a competing event.
+The full M4 covariate set was used; analysis was conducted in R~4.5.2 (\texttt{cmprsk} package v2.2.12).
+
+\begin{table}[htbp]
+  \centering
+  \caption{\textbf{Supplementary Table S2.} Fine--Gray subdistribution hazard model: full M4 covariate set.
+  Event of interest: first pain reassessment; competing event: ED departure without reassessment.
+  sHR $>1$: faster subdistribution hazard (more rapid reassessment); sHR $<1$: slower.
+  $n=17{,}009$ complete cases.}
+  \label{tab:finegray}
+  \input{sections/tab_S_finegray.tex}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig_supp_finegray_cif.png}
+  \caption{\textbf{Supplementary Figure S1.} Cumulative incidence of first pain reassessment by insurance group, estimated by the Aalen--Johansen estimator.
+  ED departure without reassessment is treated as a competing event.
+  Curves show the subdistribution cumulative incidence within 240 minutes of initial pain documentation.}
+  \label{fig:finegray_cif}
+\end{figure}
+
+The Fine--Gray results were highly concordant with the primary Cox model.
+Medicaid-insured patients showed a significantly lower subdistribution hazard ratio (sHR~$= 0.85$, 95\%~CI 0.80--0.90, $p<0.001$) and Medicare-insured patients also showed slower reassessment (sHR~$= 0.93$, 95\%~CI 0.88--0.98, $p = 0.008$), confirming that the insurance disparity is not explained by differential rates of ED departure before reassessment.
+Black patients showed a significantly lower sHR (sHR~$= 0.89$, 95\%~CI 0.84--0.94, $p<0.001$), consistent with the primary analysis.
+The only directional discordance was for Hispanic patients (Cox HR~$= 1.04$ vs.\ sHR~$= 0.96$), but both estimates were non-significant and crossed 1.0, indicating no meaningful disparity in either framework.
+Overall, these competing-risk results support the robustness of the primary Cox conclusions.
