@@ -1,0 +1,108 @@
+{
+  "n": 42076,
+  "events": 31313,
+  "event_pct": 74.4,
+  "median_iqr": [
+    159,
+    92,
+    250
+  ],
+  "by60": [
+    4769,
+    11.3
+  ],
+  "by120": [
+    11140,
+    26.5
+  ],
+  "censored": 10763,
+  "censored_structural": [
+    522,
+    4.8,
+    1.2
+  ],
+  "single_home": 31.0,
+  "single_lwbs": 94.9,
+  "single_eloped": 63.8,
+  "trauma": 40338,
+  "ap": 1738,
+  "inj_fall": [
+    16731,
+    39.8
+  ],
+  "inj_fracture_dislocation": [
+    1984,
+    4.7
+  ],
+  "inj_other_trauma": [
+    21623,
+    51.4
+  ],
+  "age_mean_sd": [
+    49.6,
+    21.3
+  ],
+  "female_pct": 50.9,
+  "race_White": [
+    26685,
+    63.4
+  ],
+  "race_Black": [
+    7455,
+    17.7
+  ],
+  "race_Hispanic": [
+    2836,
+    6.7
+  ],
+  "race_Asian": [
+    2052,
+    4.9
+  ],
+  "race_Unknown": [
+    2878,
+    6.8
+  ],
+  "race_Other": [
+    170,
+    0.4
+  ],
+  "ins_undocumented": [
+    16976,
+    40.3
+  ],
+  "ins_Medicare": [
+    12101,
+    28.8
+  ],
+  "ins_private": [
+    7073,
+    16.8
+  ],
+  "ins_Medicaid": [
+    5926,
+    14.1
+  ],
+  "pain_mean_sd": [
+    4.3,
+    3.6
+  ],
+  "pain0": [
+    12039,
+    28.6
+  ],
+  "cif": {
+    "Medicaid_60": 11.6,
+    "Medicaid_120": 25.7,
+    "Medicaid_180": 40.7,
+    "Medicare_60": 15.2,
+    "Medicare_120": 30.2,
+    "Medicare_180": 45.5,
+    "private_60": 13.0,
+    "private_120": 28.5,
+    "private_180": 44.6,
+    "undocumented_60": 7.5,
+    "undocumented_120": 22.8,
+    "undocumented_180": 40.1
+  }
+}

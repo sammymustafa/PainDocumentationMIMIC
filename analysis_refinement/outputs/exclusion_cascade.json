@@ -1,0 +1,182 @@
+{
+  "final_analytic_n": 17535,
+  "single_positive_score_stays": 6712,
+  "multi_positive_score_stays": 10823,
+  "single_score_pct": 38.3,
+  "cascade": [
+    {
+      "step": "1. diagnosis in {AP, trauma}",
+      "note": "src/cohort_filters.py:53-54 \u2014 drops mixed 'both_ap_and_trauma'",
+      "n_in": 47783,
+      "n_dropped": 10,
+      "n_remaining": 47773,
+      "dropped_profile": {
+        "n": 10,
+        "by_diagnosis": {
+          "both_ap_and_trauma": 10
+        },
+        "by_race": {
+          "White": 4,
+          "Black": 4,
+          "Hispanic": 1,
+          "Unknown": 1
+        },
+        "by_insurance": {
+          "Medicare": 3,
+          "Medicaid": 3,
+          "private": 2,
+          "undocumented": 2
+        }
+      }
+    },
+    {
+      "step": "2. drop small race groups",
+      "note": "src/cohort_filters.py:52 \u2014 AI/AN, NH/PI, Two-or-More",
+      "n_in": 47773,
+      "n_dropped": 202,
+      "n_remaining": 47571,
+      "dropped_profile": {
+        "n": 202,
+        "by_diagnosis": {
+          "trauma": 194,
+          "acute_pancreatitis": 8
+        },
+        "by_race": {
+          "American Indian or Alaska Native": 120,
+          "Native Hawaiian or Other Pacific Islander": 73,
+          "Two or More Races": 9
+        },
+        "by_insurance": {
+          "undocumented": 84,
+          "Medicare": 53,
+          "private": 38,
+          "Medicaid": 27
+        }
+      }
+    },
+    {
+      "step": "3. race in {White,Black,Asian,Hispanic}",
+      "note": "prep_survival.py:98 \u2014 drops Unknown / Other race",
+      "n_in": 47571,
+      "n_dropped": 4048,
+      "n_remaining": 43523,
+      "dropped_profile": {
+        "n": 4048,
+        "by_diagnosis": {
+          "trauma": 3938,
+          "acute_pancreatitis": 110
+        },
+        "by_race": {
+          "Unknown": 4048
+        },
+        "by_insurance": {
+          "undocumented": 1883,
+          "private": 788,
+          "Medicare": 720,
+          "Medicaid": 657
+        }
+      }
+    },
+    {
+      "step": "4. >=1 documented pain score > 0",
+      "note": "prep_survival.py:61,97 \u2014 pain_numeric>0; note: pain=0 rows are dropped, so patients with only 0 scores are excluded here",
+      "n_in": 43523,
+      "n_dropped": 13109,
+      "n_remaining": 30414,
+      "dropped_profile": {
+        "n": 13109,
+        "by_diagnosis": {
+          "trauma": 12687,
+          "acute_pancreatitis": 422
+        },
+        "by_race": {
+          "White": 9159,
+          "Black": 2301,
+          "Hispanic": 875,
+          "Asian": 774
+        },
+        "by_insurance": {
+          "undocumented": 4677,
+          "Medicare": 4550,
+          "private": 2050,
+          "Medicaid": 1832
+        }
+      }
+    },
+    {
+      "step": "5. valid survival time (duration > 0)",
+      "note": "prep_survival.py:107 \u2014 initial pain must precede outtime",
+      "n_in": 30414,
+      "n_dropped": 488,
+      "n_remaining": 29926,
+      "dropped_profile": {
+        "n": 488,
+        "by_diagnosis": {
+          "trauma": 441,
+          "acute_pancreatitis": 47
+        },
+        "by_race": {
+          "White": 341,
+          "Black": 78,
+          "Hispanic": 49,
+          "Asian": 20
+        },
+        "by_insurance": {
+          "undocumented": 165,
+          "Medicare": 137,
+          "private": 99,
+          "Medicaid": 87
+        }
+      }
+    },
+    {
+      "step": "6. non-missing ESI (triage acuity)",
+      "note": "prep_cohort.py:41-47",
+      "n_in": 29926,
+      "n_dropped": 237,
+      "n_remaining": 29689,
+      "dropped_profile": {
+        "n": 237,
+        "by_diagnosis": {
+          "trauma": 232,
+          "acute_pancreatitis": 5
+        },
+        "by_race": {
+          "White": 194,
+          "Black": 21,
+          "Hispanic": 15,
+          "Asian": 7
+        },
+        "by_insurance": {
+          "undocumented": 96,
+          "private": 61,
+          "Medicare": 48,
+          "Medicaid": 32
+        }
+      }
+    },
+    {
+      "step": "7. insurance in {private,Medicaid,Medicare}",
+      "note": "prep_cohort.py:52-53 \u2014 drops 'undocumented' insurance",
+      "n_in": 29689,
+      "n_dropped": 12154,
+      "n_remaining": 17535,
+      "dropped_profile": {
+        "n": 12154,
+        "by_diagnosis": {
+          "trauma": 12058,
+          "acute_pancreatitis": 96
+        },
+        "by_race": {
+          "White": 7731,
+          "Black": 2373,
+          "Hispanic": 1095,
+          "Asian": 955
+        },
+        "by_insurance": {
+          "undocumented": 12154
+        }
+      }
+    }
+  ]
+}

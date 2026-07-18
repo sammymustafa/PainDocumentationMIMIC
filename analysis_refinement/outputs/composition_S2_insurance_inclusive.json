@@ -1,0 +1,18 @@
+{
+  "race": {
+    "White": 20172,
+    "Black": 5802,
+    "Hispanic": 2301,
+    "Asian": 1493
+  },
+  "insurance": {
+    "undocumented": 12159,
+    "Medicare": 8224,
+    "private": 5188,
+    "Medicaid": 4197
+  },
+  "diagnosis": {
+    "trauma": 28384,
+    "acute_pancreatitis": 1384
+  }
+}

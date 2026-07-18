@@ -1,0 +1,224 @@
+# Measuring the Response to Pain: Factors Associated with Time to Reassessment in the Emergency Department
+
+## Abstract
+
+**Objectives.** To characterize timeliness of emergency department (ED) pain reassessment and examine differences by insurance, race and ethnicity, and language.
+
+**Methods.** We studied 42,076 adult ED stays for trauma or acute pancreatitis in MIMIC-IV-ED at a Boston, Massachusetts academic medical center, 2011–2019 (dates shifted). The outcome was time from the first numeric pain score to the next assessment. Cause-specific Cox models, treating ED departure before reassessment as censoring, adjusted for clinical, demographic, triage, and workflow factors. Alternative cohort definitions tested sensitivity to exclusion rules.
+
+**Results.** Reassessment occurred before departure in 74.4% of stays (median 159 minutes); 26.5% within 2 hours. Medicaid-insured patients had slower reassessment than privately insured patients (adjusted hazard ratio = 0.87; 95% confidence interval = 0.84, 0.91), with standardized 2-hour probabilities of 27.1% versus 30.4%. Black–White and Hispanic–White differences were near null; the Asian–White estimate varied by cohort specification.
+
+**Conclusions.** Pain reassessment was delayed overall and modestly but consistently slower among Medicaid-insured patients.
+
+**Public Health Implications.** Pain reassessment intervals are a measurable, modifiable ED quality target; stratifying by insurance may identify remediable differences in routine care.
+
+## Introduction
+
+Pain is among the most common reasons for emergency department (ED) visits in the United States, and repeated assessment is the mechanism by which analgesia is titrated, clinical deterioration is noticed, and a patient's report of pain enters the medical record at all. Regulatory attention has focused mainly on initial assessment. The Joint Commission's pain standards, introduced in 2001 and revised since, require that pain be assessed and reassessed but leave the interval unspecified.¹ In practice, reassessment is the step most likely to be skipped.
+
+A substantial literature documents differences in ED analgesia by race and ethnicity, including lower rates of opioid prescribing for Black patients²⁻⁴ and false beliefs among clinicians about biological differences in pain perception.⁵ Far less is known about the documentation process that precedes treatment decisions. When pain reassessment occurs later for some groups, their pain trajectories become less visible in the record, treatment adjustments arrive later, and quality metrics built on documented scores understate their burden.
+
+Documentation timing also differs from prescribing in a way that matters for public health practice. It is a process measure that health systems fully control, generated continuously in the course of routine care, and therefore auditable at scale without new data collection. Unlike prescribing decisions, which depend on clinician judgment and on drug-specific policy, the interval between a recorded pain score and the next one is a property of unit routine and staffing, and it applies to every patient who reports pain rather than to the subset who receive a particular medication.
+
+That auditability is only useful if the measure is constructed on a cohort that includes the patients whose care is most at issue. Electronic health record (EHR) studies routinely exclude stays with undocumented insurance, small race and ethnicity categories, pain scores of zero, or a single recorded score. Because eligibility under those rules is itself patterned by the exposures under study, cohort construction can shape group comparisons.⁶
+
+We used MIMIC-IV-ED⁷,⁸ to examine the overall timeliness of pain reassessment and whether time to reassessment differed by insurance, race and ethnicity, and language among ED patients with acute pancreatitis or trauma. We used an inclusive primary cohort because exclusions based on undocumented insurance, small race and ethnicity categories, zero pain scores, or the absence of a second pain score could alter group comparisons. A more restrictive specification, reflecting conventional exclusion rules, was retained as a sensitivity analysis to evaluate the influence of cohort construction.
+
+## Methods
+
+### Data Source and Design
+
+MIMIC-IV-ED is a publicly available, deidentified database of ED stays at Beth Israel Deaconess Medical Center in Boston, Massachusetts, between 2011 and 2019, with dates shifted for deidentification.⁷,⁸ We linked ED stays to hospital records in MIMIC-IV v3.1 for insurance, language, and comorbidity information. This retrospective cohort study is reported in line with STROBE guidance.⁹ Use of the database is covered by its data use agreement; no additional institutional review board review was required.
+
+### Cohort
+
+We included ED stays with a diagnosis of acute pancreatitis or trauma (International Classification of Diseases, Ninth and Tenth Revision codes beginning with S or T, or diagnosis titles containing trauma, injury, fracture, laceration, contusion, or burn). These conditions were selected because pain is central to both while they differ in mechanism and typical acuity. Acute pancreatitis was analyzed as a single group; the available cell sizes did not support subtype analyses.
+
+Eligible stays required at least one numeric pain score (0–10) recorded in the ED vital-sign record, a positive interval between that score and ED departure, a documented triage acuity (Emergency Severity Index [ESI]),¹⁰ and complete data on the model covariates (first vital signs and age). No other exclusions were applied. All race and ethnicity categories were retained, with groups too small to model separately (American Indian or Alaska Native, Native Hawaiian or Other Pacific Islander, Two or More Races) pooled as "Other" and unknown race retained as its own level. Undocumented insurance and undocumented language were retained as explicit covariate levels. Initial pain scores of zero counted as valid documentation, and stays with a single pain score were retained and censored at ED departure.
+
+Of 425,087 ED stays in MIMIC-IV-ED, 377,314 lacked an acute pancreatitis or trauma diagnosis and 4,405 of the remaining 47,773 lacked any numeric pain documentation. Of the 43,368 stays with a numeric score, 518 were excluded because the first score carried the same timestamp as ED departure or a later one, 445 for missing triage acuity, and 329 for missing first vital signs or age, yielding a primary analytic cohort of 42,076 stays used in all descriptive and model analyses (Appendix Figure A1). The restrictive specification described below would have retained 17,412.
+
+### Outcome
+
+The outcome was time in minutes from the first documented numeric pain score to the next documented pain assessment during the same stay. A subsequent numeric score always counted as a reassessment. Non-numeric entries in the pain field (11.7% of raw entries; e.g., "UTA," "sleeping," "critical") were classified with a keyword taxonomy into entries suggesting clinical complications (unable to assess, sedated, intubated, critical) and entries suggesting the patient was unavailable or declined (sleeping, refused); patients unable to self-report are a recognized clinical population with distinct assessment recommendations.¹¹ In the primary analysis, a text entry after the initial score counted as a reassessment attempt, because documentation occurred; a sensitivity cohort ignored text entries entirely. Duplicate rows with identical stay, timestamp, and value were removed, and no stay had conflicting numeric values recorded at the same instant. Stays without a second assessment were censored at ED departure.
+
+### Statistical Analysis
+
+Cohort characteristics are summarized with counts and proportions or means and standard deviations. The primary model was a cause-specific Cox proportional hazards model fit by maximum partial likelihood (lifelines 0.30, Python 3.13). Time was measured from the first documented pain score, and the event of interest was the first subsequent pain assessment. Departure from the ED without a further assessment — whether by routine discharge, hospital admission, or structural departure (eloping, leaving without being seen, leaving against medical advice, death, or transfer) — was treated as censoring. Structural departures, the subset in which reassessment was rendered impossible rather than merely unobserved, accounted for 522 stays (1.2%).
+
+Covariates entered in four prespecified blocks: initial pain score and diagnosis or injury group (M1); race and ethnicity, age group, sex, insurance, and language (M2); triage acuity and standardized first vital signs — heart rate, respiratory rate, systolic blood pressure (M3); and arrival mode, arrival shift, weekend arrival, two ED crowding measures, and calendar era (M4, primary). Hazard ratios (HRs) above 1 indicate faster reassessment. Because complete covariate data are part of eligibility, all 42,076 stays contribute to every model; missingness of analytic variables was below 2% overall and was tabulated by race and insurance rather than imputed (Appendix Table A2).¹²
+
+Figure 1 presents a directed acyclic graph encoding the assumed structure. Social position (insurance, race and ethnicity, language) is taken to influence reassessment through clinical presentation, triage assignment, and arrival pathway, and may also act directly through clinician attention. Analgesia and disposition are downstream of reassessment and were excluded from all models.
+
+Three sets of supporting analyses are reported in the Appendix. First, six alternative cohorts re-ran the identical M4 specification, varying one selection rule at a time: a restrictive specification reflecting conventional exclusions (S0); inclusive race handling only (S1); inclusive insurance only (S2); zero scores valid (S3); text entries ignored (S4); and trauma only (S5). Second, E-values¹³ quantified the minimum strength of association an unmeasured confounder would need with both exposure and outcome to fully explain the key estimates. Third, because hazard ratios are difficult to act on, we report absolute risks: the observed cumulative incidence of reassessment by insurance group, estimated with the Aalen–Johansen estimator so that ED departure is handled as a competing event rather than as censoring,¹⁴ and Cox-model-standardized probabilities of reassessment by 60 and 120 minutes under each insurance assignment, averaging predicted risks over the whole cohort (G-computation on the M4 fit).
+
+## Results
+
+### Cohort
+
+Table 1 describes the primary cohort of 42,076 stays (40,338 trauma, 1,738 acute pancreatitis; within trauma, 39.8% falls, 4.7% fracture or dislocation, 51.4% other injury). Mean age was 49.6 years (SD = 21.3), and 50.9% were female. The cohort was 63.4% White (n = 26,685), 17.7% Black (n = 7,455), 6.7% Hispanic (n = 2,836), 4.9% Asian (n = 2,052), 6.8% unknown race (n = 2,878), and 0.4% pooled small categories (n = 170). Mean initial pain score was 4.3 (SD = 3.6), and 28.6% of stays had an initial score of zero. Insurance was undocumented for 16,976 stays (40.3%), Medicare for 12,101 (28.8%), private for 7,073 (16.8%), and Medicaid for 5,926 (14.1%). Undocumented insurance was concentrated among patients discharged home without hospital admission, and its prevalence varied by race, from 37.2% of White patients to 61.5% of Asian patients (Appendix Table A2).
+
+### Timeliness of Reassessment
+
+A reassessment occurred before ED departure in 31,313 stays (74.4%), at a median of 159 minutes (interquartile range = 92, 250) after the initial score. Only 11.3% of stays were reassessed within 60 minutes and 26.5% within 120 minutes. Of the 10,763 censored stays, 522 (4.8%) ended in a structural departure; the remainder were routine discharges or admissions in which no second score was charted. Among stays ending in leaving without being seen, 94.9% had only the single triage-associated score.
+
+### Differences by Insurance, Race and Ethnicity, and Language
+
+Figure 2 shows the fully adjusted model by covariate domain; Appendix Table A1 traces key estimates as each block entered. Medicaid-insured patients were reassessed more slowly than privately insured patients (HR = 0.87; 95% confidence interval [CI] = 0.84, 0.91). The estimate was 0.88 at first adjustment (M2) and did not move as severity (M3) or workflow (M4) entered. Patients with undocumented insurance also showed a modest difference (HR = 0.92; 95% CI = 0.87, 0.99), whereas Medicare did not differ from private insurance (HR = 0.99; 95% CI = 0.95, 1.03). Differences by race and ethnicity were close to null: Black–White HR = 0.99 (95% CI = 0.96, 1.02), Hispanic–White HR = 0.99 (95% CI = 0.94, 1.04), and Asian–White HR = 1.05 (95% CI = 0.99, 1.11). The small Black–White difference at M2 (HR = 0.96) moved to the null once triage acuity and vital signs entered. Non-English preferred language was not associated with reassessment timing (HR = 0.99; 95% CI = 0.94, 1.04); stays with undocumented language, largely the same stays lacking hospital-linked insurance data, appeared faster (HR = 1.18; 95% CI = 1.11, 1.26), a pattern consistent with an artifact of record linkage rather than a difference in care.
+
+The clinical and workflow domains behaved as expected, which serves as a check on the outcome definition. Every trauma subtype was reassessed more slowly than acute pancreatitis (fall HR = 0.79, fracture or dislocation HR = 0.77, other trauma HR = 0.82), consistent with higher admission rates and continuous nursing contact among pancreatitis patients. Higher triage acuity predicted faster reassessment (HR = 0.81 per ESI level toward less acute; 95% CI = 0.79, 0.82), with small independent contributions from heart rate (HR = 1.02 per SD) and respiratory rate (HR = 1.01 per SD) but not blood pressure. Night-shift arrivals were reassessed faster than day-shift arrivals (HR = 1.12; 95% CI = 1.08, 1.16), and recent arrival volume slowed reassessment slightly (HR = 0.99 per arrival in the prior hour), while standing census did not. Model discrimination was modest (concordance = 0.586), as expected for a process outcome dominated by unit-level routine.
+
+### Sensitivity to Cohort Construction
+
+The Medicaid association was stable in every alternative cohort, with hazard ratios between 0.83 and 0.87 across the restrictive specification, each single-rule variation, the trauma-only cohort, and the fully inclusive cohort (Appendix Figure A2, Table A4). Two estimates were not stable. The Asian–White hazard ratio was 0.87 (95% CI = 0.77, 0.99) under the restrictive specification but 1.03 to 1.05 when zero pain scores counted as documentation, so its direction depended on a data-handling rule. The Medicare–private difference (HR = 0.89 in the restrictive cohort) attenuated to the null (HR = 0.99) in the inclusive cohort, consistent with the undocumented-insurance exclusion having selectively retained admitted, older patients.
+
+The E-value for the Medicaid estimate was 1.55 (1.43 for the confidence limit): an unmeasured confounder associated with both Medicaid coverage and slower reassessment by hazard ratios of approximately 1.6 each, beyond the measured covariates, could fully account for the association (Appendix Table A5).
+
+### Absolute Differences
+
+On the absolute scale (Figure 3), the observed cumulative incidence of reassessment by 2 hours was 25.7% for Medicaid, 28.5% for private, 30.2% for Medicare, and 22.8% for undocumented insurance; by 3 hours, the Medicaid–private comparison was 40.7% versus 44.6%. Standardizing over the cohort with the adjusted model, the probability of reassessment within 2 hours was 30.4% under private insurance versus 27.1% under Medicaid, a difference of 3.3 percentage points (1.5 points at 1 hour).
+
+### Documentation Content
+
+Non-numeric pain entries totaled 15,564 (11.7% of raw entries) across 7,317 stays: complication-type entries (8,240 entries in 3,683 stays), unavailability-type entries (5,223 in 3,213 stays), and 2,101 unclassifiable (Appendix Table A3). Counting these as reassessment attempts rather than discarding them changed no conclusion, but roughly 1 in 10 recorded pain "scores" is a note explaining why no score could be obtained.
+
+## Discussion
+
+In nine years of ED visits for trauma and acute pancreatitis at one academic medical center, pain reassessment was slow overall: three quarters of stays had a second assessment before departure, but the median interval exceeded two and a half hours, and only about 1 in 4 patients was reassessed within 2 hours. Against that baseline, Medicaid-insured patients waited longer than privately insured patients — a 13% lower instantaneous rate of reassessment, or 3 fewer reassessments per 100 patients by the 2-hour mark. The estimate changed little across seven cohort definitions and across an adjustment ladder from crude to fully adjusted. Adjusted Black–White and Hispanic–White differences were near null in this dataset, and the Asian–White estimate depended on cohort specification.
+
+One important finding was the sensitivity of some group comparisons to cohort construction. Requiring documented hospital-linked insurance excluded 40% of otherwise eligible stays and disproportionately removed patients who were younger, discharged home, Asian, or Hispanic. The Asian–White estimate changed direction when zero pain scores and undocumented data were retained, whereas the Medicaid estimate remained stable across cohort definitions. These results show that exclusion and data-handling rules can materially influence disparity estimates in EHR-based studies and should be reported explicitly. That selection into an EHR cohort is itself an outcome of the processes under study is a long-standing point,⁶ but it is more often raised as a limitation than tested directly.
+
+Reporting a process measure on an absolute scale clarifies what the estimate means. The adjusted hazard ratio of 0.87 corresponded to a 3.3-percentage-point difference in reassessment within 2 hours, a modest difference for an individual patient but one occurring in a common ED care process applied to large numbers of people. Insurance status may capture social, administrative, or care-pathway differences not fully measured in this dataset. The limited change in the estimate after adjustment for acuity, vital signs, arrival characteristics, crowding, and calendar era indicates that these measured factors did not account for the association, but it does not establish the underlying mechanism.
+
+Most studies of disparities in ED pain care have focused on analgesic treatment, including whether and how quickly opioids are administered, and several have reported Black–White differences in prescribing.²⁻⁵ We examined a different care process, the timing of pain reassessment, and found an insurance gradient but adjusted Black–White and Hispanic–White differences close to null. These findings do not exclude racial or ethnic differences in other components of pain care, including treatment decisions, nor do they establish that reassessment patterns are similar across institutions.
+
+### Limitations
+
+This is a single center, and documentation culture varies widely across EDs. Date shifting in MIMIC spreads the cohort across nine years of changing practice, which we adjusted for only coarsely. The insurance variable is derived from hospital admission records, so the undocumented category mixes true self-pay patients with anyone not admitted; we retained it as an explicit level rather than assuming its content. Charted reassessment is an imperfect proxy for clinical attention, because a nurse can ask about pain without charting it and the reverse. The E-values make explicit that moderate unmeasured confounding could account for the Medicaid association; we lacked functional status, behavioral health history, and income. The pancreatitis stratum was small (4.1%), so these are effectively trauma estimates, and generalization to medical pain presentations is untested. Finally, the data end in 2019 and predate any subsequent changes in ED documentation practice.
+
+## Public Health Implications (Practice, Policy, and Research)
+
+Pain reassessment intervals are generated continuously in routine ED care and can be computed from data health systems already hold, which makes them unusually practical as a quality measure. For **practice**, EDs that audit pain care could add reassessment intervals to the initial-assessment and analgesia measures they already track, and could report those intervals stratified by insurance status alongside race, ethnicity, and language. Doing so converts an equity question into a routine operational metric with an identifiable owner in nursing workflow and staffing.
+
+For **policy**, existing accreditation standards require reassessment without specifying an interval.¹ In this cohort the median interval exceeded 2 hours and fewer than 1 in 8 patients was reassessed within an hour, which suggests that attaching a measurable target to the existing requirement would give it operational meaning. Because the measure is derived from structured fields, it could be specified once and reported across systems without new data collection.
+
+For **research**, the sensitivity of group comparisons to cohort construction implies that measure specifications should be defined on inclusive cohorts and that exclusion and data-handling rules should be reported explicitly, since the patients most likely to fall out of linked administrative data are also those whose care is most at issue. Multicenter studies with consistently documented reassessment times are needed to establish whether the patterns observed here generalize across health systems and payer mixes.
+
+## Conclusions
+
+In this single-center cohort, pain reassessment was delayed overall, and Medicaid-insured patients experienced modest but consistently slower reassessment than privately insured patients. Differences by race and ethnicity were near null or sensitive to cohort specification. These findings support evaluating pain reassessment intervals by insurance status as part of ED quality monitoring, while multicenter studies are needed to determine whether the observed patterns generalize across health systems.
+
+## Figures and Tables (4 items, per AJPH limit)
+
+**FIGURE 1—Assumed causal structure for time to first pain reassessment: Boston, Massachusetts, 2011–2019.** Patient characteristics (insurance, race and ethnicity, language, age, sex) may influence reassessment timing through clinical presentation, triage assignment, and arrival pathway, and may also act directly. Arrows between grouped boxes indicate that variables in the source group may affect variables in the target group. Bracketed nodes denote selection into the analytic cohort. Analgesia and disposition lie downstream of the outcome and were excluded from all models. *Note.* ED = emergency department; ESI = Emergency Severity Index.
+
+**TABLE 1—Characteristics of the Primary Analytic Cohort (N = 42,076): Boston, Massachusetts, 2011–2019**
+
+| Characteristic | Value |
+|---|---|
+| **Demographics** | |
+| Age (years), mean (SD) | 49.6 (21.3) |
+| Female sex, n (%) | 21,423 (50.9) |
+| White race/ethnicity, n (%) | 26,685 (63.4) |
+| Black race/ethnicity, n (%) | 7,455 (17.7) |
+| Hispanic race/ethnicity, n (%) | 2,836 (6.7) |
+| Asian race/ethnicity, n (%) | 2,052 (4.9) |
+| Unknown race/ethnicity, n (%) | 2,878 (6.8) |
+| Other race/ethnicity, n (%) | 170 (0.4) |
+| **Insurance and language** | |
+| Medicare insurance, n (%) | 12,101 (28.8) |
+| Private insurance, n (%) | 7,073 (16.8) |
+| Medicaid insurance, n (%) | 5,926 (14.1) |
+| Undocumented insurance, n (%) | 16,976 (40.3) |
+| Non-English preferred language, n (%) | 2,466 (5.9) |
+| Undocumented language, n (%) | 15,560 (37.0) |
+| **Clinical** | |
+| ESI triage level, mean (SD) | 2.8 (0.8) |
+| Initial pain score, mean (SD) | 4.3 (3.6) |
+| Initial pain score = 0, n (%) | 12,039 (28.6) |
+| Trauma diagnosis, n (%) | 40,338 (95.9) |
+| — Fall, n (%) | 16,731 (39.8) |
+| — Fracture/dislocation, n (%) | 1,984 (4.7) |
+| — Other trauma, n (%) | 21,623 (51.4) |
+| Acute pancreatitis, n (%) | 1,738 (4.1) |
+| First heart rate, mean (SD) | 82.2 (16.8) |
+| First respiratory rate, mean (SD) | 17.3 (8.9) |
+| First systolic BP, mean (SD) | 135.6 (21.3) |
+| **ED workflow** | |
+| Ambulance arrival, n (%) | 18,398 (43.7) |
+| Weekend arrival, n (%) | 11,952 (28.4) |
+| Night shift arrival, n (%) | 7,449 (17.7) |
+| Evening shift arrival, n (%) | 18,851 (44.8) |
+| ED arrivals in prior hour, mean (SD) | 2.1 (1.3) |
+| **Outcomes** | |
+| Any reassessment before ED departure, n (%) | 31,313 (74.4) |
+| Reassessed within 60 min, n (%) | 4,769 (11.3) |
+| Reassessed within 120 min, n (%) | 11,140 (26.5) |
+| Time to reassessment, median (IQR), min | 159 (92–250) |
+
+*Note.* ESI = Emergency Severity Index (1 = most acute); BP = blood pressure; IQR = interquartile range. Undocumented insurance/language: no linked hospital admission record. Time to reassessment summarized among reassessed stays.
+
+**FIGURE 2—Adjusted hazard ratios for first pain reassessment, by covariate domain: Boston, Massachusetts, 2011–2019.** Primary inclusive cohort, fully adjusted model (M4; n = 42,076; 31,313 events). Hazard ratios > 1 indicate faster reassessment. Calendar era adjusted but not shown.
+
+**FIGURE 3—Absolute probability of pain reassessment, by insurance: Boston, Massachusetts, 2011–2019.** (a) Aalen–Johansen cumulative incidence of reassessment, with ED departure as a competing event. (b) Cox-model-standardized probability of reassessment by 60 and 120 minutes under each insurance assignment. *Note.* ED = emergency department.
+
+## Acknowledgments
+
+This manuscript was edited for language and readability with the assistance of a large language model developed internally by the authors' research group. The model was not used for, and did not contribute to, study conception or design, data collection, data analysis, interpretation of findings, or the generation of substantive content. All model output was reviewed and approved prior to incorporation.
+
+## References
+
+1. Baker DW. History of The Joint Commission's pain standards: lessons for today's prescription opioid epidemic. *JAMA*. 2017;317(11):1117–1118.
+2. Pletcher MJ, Kertesz SG, Kohn MA, Gonzales R. Trends in opioid prescribing by race/ethnicity for patients seeking care in US emergency departments. *JAMA*. 2008;299(1):70–78.
+3. Green CR, Anderson KO, Baker TA, et al. The unequal burden of pain: confronting racial and ethnic disparities in pain. *Pain Med*. 2003;4(3):277–294.
+4. Anderson KO, Green CR, Payne R. Racial and ethnic disparities in pain: causes and consequences of unequal care. *J Pain*. 2009;10(12):1187–1204.
+5. Hoffman KM, Trawalter S, Axt JR, Oliver MN. Racial bias in pain assessment and treatment recommendations, and false beliefs about biological differences between blacks and whites. *Proc Natl Acad Sci U S A*. 2016;113(16):4296–4301.
+6. Hernán MA, Hernández-Díaz S, Robins JM. A structural approach to selection bias. *Epidemiology*. 2004;15(5):615–625.
+7. Johnson AEW, Bulgarelli L, Shen L, et al. MIMIC-IV, a freely accessible electronic health record dataset. *Sci Data*. 2023;10(1):1.
+8. Johnson A, Bulgarelli L, Pollard T, Celi LA, Mark R, Horng S. MIMIC-IV-ED (version 2.2). PhysioNet; 2023.
+9. von Elm E, Altman DG, Egger M, et al. The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement: guidelines for reporting observational studies. *Lancet*. 2007;370(9596):1453–1457.
+10. Gilboy N, Tanabe P, Travers D, Rosenau AM. *Emergency Severity Index (ESI): A Triage Tool for Emergency Department Care, Version 4. Implementation Handbook*. Rockville, MD: Agency for Healthcare Research and Quality; 2011.
+11. Herr K, Coyne PJ, McCaffery M, Manworren R, Merkel S. Pain assessment in the patient unable to self-report: position statement with clinical practice recommendations. *Pain Manag Nurs*. 2011;12(4):230–250.
+12. Sterne JAC, White IR, Carlin JB, et al. Multiple imputation for missing data in epidemiological and clinical research: potential and pitfalls. *BMJ*. 2009;338:b2393.
+13. VanderWeele TJ, Ding P. Sensitivity analysis in observational research: introducing the E-value. *Ann Intern Med*. 2017;167(4):268–274.
+14. Austin PC, Lee DS, Fine JP. Introduction to the analysis of survival data in the presence of competing risks. *Circulation*. 2016;133(6):601–609.
+15. Todd KH, Ducharme J, Choiniere M, et al. Pain in the emergency department: results of the pain and emergency medicine initiative (PEMI) multicenter study. *J Pain*. 2007;8(6):460–466.
+16. Fine JP, Gray RJ. A proportional hazards model for the subdistribution of a competing risk. *J Am Stat Assoc*. 1999;94(446):496–509.
+
+<!-- Ref 15 (Todd/PEMI) is currently uncited in the revised main text. Either cite it in the Introduction (e.g., after the sentence on reassessment being the step most likely to be skipped) or drop it. Ref 16 (Fine & Gray) is cited only in Appendix Table A6; drop it if you remove that appendix table. 16 of the allowed 35 references are used. -->
+
+## Appendix (not counted toward the 3,500-word limit)
+
+**Table A1. Key hazard ratios (95% CI) across the sequential models M1–M4.** M1: initial pain score and diagnosis or injury group. M2: + race and ethnicity, age, sex, insurance, language. M3: + triage acuity and first vital signs. M4 (primary): + arrival mode, shift, weekend, crowding, calendar era. HR > 1 = faster reassessment.
+
+| Term | M1 | M2 | M3 | M4 (primary) |
+|---|---|---|---|---|
+| Initial pain score (per point) | 0.99 (0.98, 0.99) | 0.99 (0.99, 0.99) | 0.99 (0.99, 1.00) | 0.99 (0.99, 1.00) |
+| Fall vs acute pancreatitis | 0.82 (0.78, 0.87) | 0.80 (0.76, 0.85) | 0.79 (0.74, 0.83) | 0.79 (0.75, 0.84) |
+| Fracture/dislocation vs AP | 0.86 (0.80, 0.93) | 0.83 (0.77, 0.89) | 0.77 (0.72, 0.83) | 0.77 (0.72, 0.83) |
+| Other trauma vs AP | 0.84 (0.80, 0.89) | 0.82 (0.77, 0.87) | 0.81 (0.77, 0.86) | 0.82 (0.77, 0.87) |
+| Black vs White | — | 0.96 (0.93, 0.99) | 0.99 (0.96, 1.02) | 0.99 (0.96, 1.02) |
+| Hispanic vs White | — | 0.97 (0.92, 1.02) | 0.99 (0.94, 1.04) | 0.99 (0.94, 1.04) |
+| Asian vs White | — | 1.01 (0.96, 1.07) | 1.04 (0.99, 1.10) | 1.05 (0.99, 1.11) |
+| Medicaid vs private | — | 0.88 (0.84, 0.92) | 0.87 (0.84, 0.91) | 0.87 (0.84, 0.91) |
+| Medicare vs private | — | 0.98 (0.94, 1.02) | 0.98 (0.95, 1.02) | 0.99 (0.95, 1.03) |
+| Undocumented vs private | — | 0.97 (0.91, 1.03) | 0.95 (0.89, 1.01) | 0.92 (0.87, 0.99) |
+| Non-English vs English | — | 0.96 (0.92, 1.01) | 0.98 (0.93, 1.03) | 0.99 (0.94, 1.04) |
+| Triage acuity (per ESI level) | — | — | 0.80 (0.78, 0.81) | 0.81 (0.79, 0.82) |
+| Night vs day arrival | — | — | — | 1.12 (1.08, 1.16) |
+
+**Table A2. Missingness and documentation patterns, by race and insurance.** Missing ESI ≤ 3.2% and missing first vital signs ≤ 1.1% in every group; undocumented insurance ranged from 37.2% (White) to 61.5% (Asian).
+
+**Table A3. Non-numeric pain entry taxonomy:** entry counts, stay counts, and the 12 most frequent raw strings per class.
+
+**Table A4. Sensitivity grid:** M4 hazard ratios for all key terms across cohort-selection scenarios S0–S6. S0 = restrictive specification (documented hospital-linked insurance, modeled race and ethnicity categories only, initial pain score > 0, ≥ 2 pain scores; n = 17,412). S1 = inclusive race handling only. S2 = undocumented insurance retained. S3 = zero pain scores counted as valid documentation. S4 = non-numeric text entries ignored rather than counted. S5 = trauma only. S6 = fully inclusive primary cohort (n = 42,076).
+
+**Table A5. E-values for all key M4 estimates.**
+
+**Table A6. Competing-risk sensitivity analysis:** Fine–Gray subdistribution hazard ratios with structural departures (eloped, left without being seen, left against medical advice, died, transferred) as the competing event. Estimates were materially unchanged from the cause-specific Cox model (Medicaid subdistribution HR = 0.86; 95% CI = 0.83, 0.90 vs cause-specific HR = 0.87), consistent with structural departures being too rare (1.2% of the cohort) to produce meaningful distortion.¹⁶
+
+**Figure A1. Cohort flow diagram.** From all 425,087 MIMIC-IV-ED stays through diagnosis selection, pain-score documentation, and the combined final eligibility step (triage acuity documented, first score before ED departure, complete model covariates), yielding the primary analytic cohort of 42,076 used in all analyses. No exclusions were applied for race and ethnicity category, insurance documentation, zero pain scores, or single-score stays; single-score stays were censored at ED departure.
+
+**Figure A2. Key hazard ratios across the seven cohort-selection scenarios.** (Use current draft Figure 4, relabeled.)
+
+**Single-score stays.** Under the primary definition (zero scores valid), exactly one numeric pain score was recorded in 31.0% of home-discharged stays, 94.9% of left-without-being-seen stays, and 63.8% of eloped stays. These stays were retained and censored in all analyses.

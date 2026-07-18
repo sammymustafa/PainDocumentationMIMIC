@@ -1,0 +1,16 @@
+{
+  "race": {
+    "White": 11514,
+    "Black": 3195,
+    "Hispanic": 1112,
+    "Asian": 501
+  },
+  "insurance": {
+    "Medicare": 7749,
+    "private": 4696,
+    "Medicaid": 3877
+  },
+  "diagnosis": {
+    "trauma": 16322
+  }
+}

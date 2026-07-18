@@ -1,0 +1,6 @@
+{
+  "primary": "S6_all_inclusive",
+  "n": 42405,
+  "events": 31403,
+  "sensitivity_source": "outputs/scenario_m4_terms.csv (S0-S5)"
+}
